@@ -1,0 +1,69 @@
+
+package de.oszimt.DreiSchichten.model;
+
+/**
+ *
+ * @author konstantin.görlitz
+ */
+public class Dorf {
+    private int id;
+    private int[] lagerIDs;
+    private int[] mitgliederIDs;
+    
+    public Dorf(){
+        super();
+    }
+    
+    public Dorf(int id){
+        this();
+        this.setId(id);
+    }
+    
+    public Dorf(int id, int[] lagerIDs, int[] mitgliederIDs){
+        this(id);
+        this.setLagerIDs(lagerIDs);
+        this.setMitgliederIDs(mitgliederIDs);
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the lagerIDs
+     */
+    public int[] getLagerIDs() {
+        return lagerIDs;
+    }
+
+    /**
+     * @param lagerIDs the lagerIDs to set
+     */
+    public void setLagerIDs(int[] lagerIDs) {
+        this.lagerIDs = lagerIDs;
+    }
+
+    /**
+     * @return the mitgliederIDs
+     */
+    public int[] getMitgliederIDs() {
+        return mitgliederIDs;
+    }
+
+    /**
+     * @param mitgliederIDs the mitgliederIDs to set
+     */
+    public void setMitgliederIDs(int[] mitgliederIDs) {
+        this.mitgliederIDs = mitgliederIDs;
+    }
+}
