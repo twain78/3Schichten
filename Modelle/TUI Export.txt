@@ -1,0 +1,14 @@
+<mockup version="1.0" skin="sketch" fontFace="Balsamiq Sans" measuredW="724" measuredH="712" mockupW="450" mockupH="598">
+  <controls>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::TitleWindow" x="274" y="114" w="450" h="598" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Konsole</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::TextArea" x="274" y="138" w="450" h="553" measuredW="200" measuredH="140" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Dorf%FCbersicht%3A%0A%20%0AID%09Name%09%09Lager%0A1%20%09Paris%09%091%0A2%20%09London%09%093%0A3%20%09Berlin%09%091%0A4%20%09NewYork%092%0An%09Neues%20Dorf%0Ae%09Exit%0A%20%0AAuswahl%20%28ID%29%3A%203%0A%20%0ABerlin%3A%0A%20%0AID%09Name%0A1%09Helmut%0A2%09Jan%0Ab%09Dorf%20bearbeiten%0Al%09Dorf%20l%F6schen%0Az%09Zur%FCck%0A%20%0AAuswahl%20%28ID%29%3A%201%0A%20%0AHelmut%3A%0A%20%0AID%09Beruf%09%09%09Skill%0A1%09Schmied%09%093%0Ab%09Name%20bearbeiten%0Al%09Mitglied%20l%F6schen%0Az%09Zur%FCck%0A%20%0AAuswahl%20%28ID%29%3A%201</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
