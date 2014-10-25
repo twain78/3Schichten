@@ -1,3 +1,5 @@
+package de.oszimt.DreiSchichten.database;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -5,8 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-package de.oszimt.DreiSchichten.database;
+// Model-Imports
+import de.oszimt.DreiSchichten.model.Beruf;
+import de.oszimt.DreiSchichten.model.Berufstyp;
+import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.Lager;
+import de.oszimt.DreiSchichten.model.Mitglied;
 
 /**
  * LastChange: 25.10.2014
@@ -24,41 +33,182 @@ package de.oszimt.DreiSchichten.database;
 
 
 public class DBAccess {
-    private Connection m_Connect;
-  private Statement m_Statement;
-  private PreparedStatement m_PreparedStatement;
+  private Connection m_Connection;
   private ResultSet m_ResultSet;
   
-  
+  // Beruf-Table
+  private PreparedStatement m_GetBeruf;
+  private PreparedStatement m_SetBeruf;
+  private PreparedStatement m_GetBerufCount;
+  // Berufstyp-Table
+  private PreparedStatement m_GetBerufstyp;
+  private PreparedStatement m_SetBerufstyp;
+  private PreparedStatement m_GetBerufstypCount;
+  // Dorf-Table
+  private PreparedStatement m_GetDorf;
+  private PreparedStatement m_SetDorf;
+  private PreparedStatement m_GetDorfCount;
+  // Lager-Table
+  private PreparedStatement m_GetLager;
+  private PreparedStatement m_SetLager;
+  private PreparedStatement m_GetLagerCount;
+  // LagerBestand-Table
+  private PreparedStatement m_GetLagerBestand;
+  private PreparedStatement m_SetLagerBestand;
+  private PreparedStatement m_GetLagerBestandCount;
+  // Mitglied-Table
+  private PreparedStatement m_GetMitglied;
+  private PreparedStatement m_SetMitglied;
+  private PreparedStatement m_GetMitgliedCount;
+  // Ressource-Table
+  private PreparedStatement m_GetRessource;
+  private PreparedStatement m_SetRessource;
+  private PreparedStatement m_GetRessourceCount;
+ 
   public DBAccess() {
-    m_Connect = null;
-    m_Statement = null;
-    m_PreparedStatement = null;
+    m_Connection = null;
     m_ResultSet = null;
     
-    // Verbindung intialisieren
-    initConnection();
+    InitConnection();
+    InitPrepStatements();
   }
+  
   
   // Verbindung intialisieren
-  public void initConnection() throws Exception {
+  public void InitConnection() {
     try {
-      // Treiber laden
-      Class.forName("com.mysql.jdbc.Driver");
+      // Treiber zuweisen
+      Class.forName("org.sqlite.JDBC");
       
       // Verbindung zur Datenbank aufbauen
-      connect = DriverManager
-      .getConnection("jdbc:mysql://localhost/feedback?"
-      + "user=sqluser&password=sqluserpw");  
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
+      m_Connection = DriverManager.getConnection("jdbc:sqlite:lif_DB.db");  
+    } catch (Exception e) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      System.exit(0);
     }
   }
   
+  public void InitPrepStatements()
+  {
+      try {
+      
+      //// Beruf-Statements
+      m_GetBeruf = m_Connection
+              .prepareStatement("SELECT P_ID, FK_TYP_ID, Punkte FROM lif_DB.Beruf WHERE P_ID = ?");
+      m_SetBeruf = m_Connection
+              .prepareStatement("UPDATE lif_DB.Beruf SET Punkte = ? WHERE P_ID = ?");
+      m_GetBerufCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Beruf");      
+      ////
+      
+      //// Berufstyp-Statements
+      m_GetBerufstyp = m_Connection
+              .prepareStatement("SELECT P_ID, Name, SK1, SK2, SK3, SK4, SK5 FROM lif_DB.Berufstyp WHERE P_ID = ?");
+      m_SetBerufstyp = m_Connection
+              .prepareStatement("UPDATE lif_DB.Berufstyp SET Name = ?, SET SK1 = ?, SK2 = ?, SK3 = ?, SK4 = ?, SK5 = ? WHERE P_ID = ?");
+      m_GetBerufstypCount = m_Connection        
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Berufstyp");
+      ////
+      
+      //// Dorf-Statements
+      m_GetDorf = m_Connection
+              .prepareStatement("SELECT P_ID, Name FROM lif_DB.Dorf WHERE P_ID = ?");
+      m_SetDorf = m_Connection
+              .prepareStatement("UPDATE lif_DB.Dorf SET Name = ? WHERE P_ID = ?");
+      m_GetDorfCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Dorf");
+      ////
+     
+      //// Lager-Statements
+      m_GetLager = m_Connection
+              .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM lif_DB.Lager WHERE P_ID = ?");
+      m_SetLager = m_Connection
+              .prepareStatement("UPDATE lif_DB.Lager SET Name = ? WHERE P_ID = ?");
+      m_GetLagerCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Lager");   
+      ////
+      
+      //// LagerBestand-Statements
+      m_GetLagerBestand = m_Connection
+              .prepareStatement("SELECT P_ID, FK_RES_ID, FK_Lager_ID, Menge  FROM lif_DB.LagerBestand WHERE P_ID = ?");
+      m_SetLagerBestand = m_Connection
+              .prepareStatement("UPDATE lif_DB.LagerBestand SET Menge = ? WHERE P_ID = ?");
+      m_GetLagerBestandCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.LagerBestand");    
+      ////
+      
+      //// Mitglied-Statements
+      m_GetMitglied = m_Connection
+              .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM lif_DB.Mitglied WHERE P_ID = ?");
+      m_SetMitglied = m_Connection
+              .prepareStatement("UPDATE lif_DB.Mitglied SET Name = ? WHERE P_ID = ?");
+      m_GetMitgliedCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Mitglied");    
+      ////
+      
+      //// Ressource-Statements
+      m_GetRessource = m_Connection
+              .prepareStatement("SELECT P_ID, FK_TYP_ID, Punkte FROM lif_DB.Beruf WHERE P_ID = ?");
+      m_SetRessource = m_Connection
+              .prepareStatement("UPDATE lif_DB.Beruf SET Punkte = ? WHERE P_ID = ?");
+      m_GetRessourceCount = m_Connection
+              .prepareStatement("SELECT COUNT(*) FROM lif_DB.Beruf");    
+       ////
+      
+      
+      // Anm.: vllt geht mit dem Count auch sowas "SELECT COUNT(*) FROM ?" , dann könnte man das sehr viel mehr vereinfachen
+      
+      } catch (SQLException e)
+      {     
+      }
+    
+  }
+  
+  ///// die Frage ist, ob man überhaupt soviel Macht dem Anwender geben will:
+  // AddBeruf, Object ohne Id wird reingegeben und mit Id wieder ausgespuckt
+  // RemBeruf, 
+  // UpdateBeruf
+  public Beruf getBeruf(int berufId) 
+  {
+      Beruf curBeruf = new Beruf();
+      try {
+      
+      long tmpPID, FK_TYP_ID, Punkte;
+     
+      m_GetBeruf.setString(1, String.valueOf(berufId));
+      m_ResultSet = m_GetBeruf.executeQuery();
+      
+      tmpPID = m_ResultSet.getLong(1);
+      FK_TYP_ID = m_ResultSet.getLong(2);
+      Punkte = m_ResultSet.getLong(3);
+      
+      curBeruf = new Beruf((int)tmpPID, (int)FK_TYP_ID, (int)Punkte);
+      
+      return curBeruf;
+      
+      } catch (SQLException e)
+      {     
+          return curBeruf;
+      }
+  }
+  
+  public void setBeruf(Beruf curBeruf)
+  {
+      try {
+      
+      long tmpPID, FK_TYP_ID, Punkte;
+     
+      m_SetBeruf.setString(1, String.valueOf(curBeruf.getPunkte()));
+      m_SetBeruf.setString(2, String.valueOf(curBeruf.getId()));
+      m_ResultSet = m_SetBeruf.executeQuery();
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+  
+  
+ /*
   /// Rückgabe der ganzen Daten eines Dorfes anhand der ID -- Edit-Marker
   // Name eines spezifischen Dorfes zurückgeben
   public void readDorfName(int dorfId) throws Exception {
@@ -130,8 +280,7 @@ public class DBAccess {
     }
   }
   
-  // Edit-Marker
-  /*
+
   // Mitgliedername Methoden noch implementieren
   //
   
@@ -252,104 +401,4 @@ public class DBAccess {
     }
   }
   */
-  
-  /// Dummy-Funktion zum Anschauen von Beispiel-Code
-  public void readDataBase() throws Exception {
-    try {
-      // Treiber laden
-      Class.forName("com.mysql.jdbc.Driver");
-      // Verbindung zur Datenbank aufbauen
-      connect = DriverManager
-      .getConnection("jdbc:mysql://localhost/feedback?"
-      + "user=sqluser&password=sqluserpw");
-      
-      // statements allow to issue SQL queries to the database
-      statement = connect.createStatement();
-      // resultSet gets the result of the SQL query
-      resultSet = statement
-      .executeQuery("select * from Mitglied where FK_Dorf_ID = 1");
-      writeResultSet(resultSet);
-      
-      // preparedStatements can use variables and are more efficient
-      preparedStatement = connect
-      .prepareStatement("insert into  FEEDBACK.COMMENTS values (default, ?, ?, ?, ? , ?, ?)");
-      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-      // parameters start with 1
-      preparedStatement.setString(1, "Test");
-      preparedStatement.setString(2, "TestEmail");
-      preparedStatement.setString(3, "TestWebpage");
-      preparedStatement.setDate(4, new java.sql.Date(2009, 12, 11));
-      preparedStatement.setString(5, "TestSummary");
-      preparedStatement.setString(6, "TestComment");
-      preparedStatement.executeUpdate();
-      
-      preparedStatement = connect
-      .prepareStatement("SELECT myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-      resultSet = preparedStatement.executeQuery();
-      writeResultSet(resultSet);
-      
-      // remove again the insert comment
-      preparedStatement = connect
-      .prepareStatement("delete from FEEDBACK.COMMENTS where myuser= ? ; ");
-      preparedStatement.setString(1, "Test");
-      preparedStatement.executeUpdate();
-      
-      resultSet = statement
-      .executeQuery("select * from FEEDBACK.COMMENTS");
-      writeMetaData(resultSet);
-      
-    } catch (Exception e) {
-      throw e;
-    } finally {
-      close();
-    }
-    
-  }
-  
-  // -- Edit-Marker
-  private void writeMetaData(ResultSet resultSet) throws SQLException {
-    // now get some metadata from the database
-    System.out.println("The columns in the table are: ");
-    System.out.println("Table: " + resultSet.getMetaData().getTableName(1));
-    for  (int i = 1; i<= resultSet.getMetaData().getColumnCount(); i++){
-      System.out.println("Column " +i  + " "+ resultSet.getMetaData().getColumnName(i));
-    }
-  }
-  
-  // -- Edit-Marker
-  private void writeResultSet(ResultSet resultSet) throws SQLException {
-    // resultSet is initialised before the first data set
-    while (resultSet.next()) {
-      // it is possible to get the columns via name
-      // also possible to get the columns via the column number
-      // which starts at 1
-      // e.g., resultSet.getSTring(2);
-      String user = resultSet.getString("myuser");
-      String website = resultSet.getString("webpage");
-      String summary = resultSet.getString("summary");
-      Date date = resultSet.getDate("datum");
-      String comment = resultSet.getString("comments");
-      System.out.println("User: " + user);
-      System.out.println("Website: " + website);
-      System.out.println("Summary: " + summary);
-      System.out.println("Date: " + date);
-      System.out.println("Comment: " + comment);
-    }
-  }
-  
-  // you need to close all three to make sure
-  private void close() {
-    close(resultSet);
-    close(statement);
-    close(connect);
-  }
-  private void close(Closeable c) {
-    try {
-      if (c != null) {
-        c.close();
-      }
-    } catch (Exception e) {
-      // don't throw now as it might leave following closables in undefined state
-    }
-  }
 }
