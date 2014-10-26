@@ -195,8 +195,6 @@ public class DBAccess {
   public void setBeruf(Beruf curBeruf)
   {
       try {
-      
-      long tmpPID, FK_TYP_ID, Punkte;
      
       m_SetBeruf.setString(1, String.valueOf(curBeruf.getPunkte()));
       m_SetBeruf.setString(2, String.valueOf(curBeruf.getId()));
@@ -207,198 +205,265 @@ public class DBAccess {
       }
   }
   
-  
- /*
-  /// Rückgabe der ganzen Daten eines Dorfes anhand der ID -- Edit-Marker
-  // Name eines spezifischen Dorfes zurückgeben
-  public void readDorfName(int dorfId) throws Exception {
-    try {
-      // Name des Dorfes mit Id = ? zurückgeben
-      getNamePrepStatement = connect
-      .prepareStatement("SELECT Name FROM Dorf WHERE P_ID = ?; ");
-      
-      // parameters start with 1
-      getNamePrepStatement.setString(1, dorfId);
-      resultSet = getNamePrepStatement.executeQuery();
-      writeResultSet(resultSet);
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  // Daten der Dörfer-Tabelle zusammenstellen
-  public void getDoerferData() throws Exception {
-    try {
-      // Name des Dorfes mit Id = ? zurückgeben
-      getNamePrepStatement = connect
-      .prepareStatement("SELECT * FROM Dorf; ");
-      
-      //// Edit-Marker
-      // Entweder mit cleveren Join bzw. SubSelect die Tabelle zusammenbauen
-      
-      // oder durch das ResultSet iterieren 
-      // und 3SQL-Abfragen am Ende produzieren
-      
-      // parameters start with 1
-      getNamePrepStatement.setString(1, dorfId);
-      resultSet = getNamePrepStatement.executeQuery();
-      writeResultSet(resultSet);
-      
-      
-      // Bevölkerungsanazhl zu jedem Dorf
-      
-      // Lageranzahl zu jedem Dorf
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
+  public int GetBerufCount()
+  {
+      try {
+          m_ResultSet = m_GetBerufCount.executeQuery();
+          return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
   }
   
   
-  // Anzahl der Dörfer zurückgeben
-  public void readDorfCount() throws Exception {
-    try {
-      // Anzahl der Dörfer zurückgeben
-      getDorfCountPrepStatement = connect
-      .prepareStatement("SELECT COUNT(*) FROM Dorf; ");
+  public Berufstyp GetBerufstyp(int berufstypId)
+  {
+      Berufstyp curBerufstyp = new Berufstyp();
+      try {
       
-      resultSet = getDorfCountPrepStatement.executeQuery();
-      writeResultSet(resultSet);
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-
-  // Mitgliedername Methoden noch implementieren
-  //
-  
-  public void getMitgliedList() throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  } 
-  
-  public void addMitglied(string name, string beruf) throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  } 
-  
-  public void updateMitglied(string name, string beruf) throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  } 
-  
-  public void getRessourceData(int ressourceId) throws Exception {
-    try {
+      long tmpPID, SK1, SK2, SK3, SK4, SK5;
+      String Name = "";
       
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  public void addRessourceData(int ressourceId, int anzahl) throws Exception {
-    try {
+      m_GetBerufstyp.setString(1, String.valueOf(berufstypId));
+      m_ResultSet = m_GetBerufstyp.executeQuery();
       
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  public void removeRessourceData(int ressourceId, int anzahl) throws Exception {
-    try {
+      tmpPID = m_ResultSet.getLong(1);
+      Name = m_ResultSet.getObject(2).toString();
+      SK1 = m_ResultSet.getLong(3);
+      SK2 = m_ResultSet.getLong(4);
+      SK3 = m_ResultSet.getLong(5);
+      SK4 = m_ResultSet.getLong(6);
+      SK5 = m_ResultSet.getLong(7);
       
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  // amount wird immer durch Trigger inenrhalb der Datenbank neu berechnet
-  public void addLager(string lagername)throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  // amount wird immer durch Trigger inenrhalb der Datenbank neu berechnet
-  public void updateLager(int lagerId, string lagerName)throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  
-  public void getLagerData() throws Exception {
-    try {
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
-  }
-  
-  public void getLagerBestand() {
-    try {
+      curBerufstyp = new Berufstyp((int)tmpPID, Name, (int)SK1, (int)SK2, (int)SK3, (int)SK4, (int)SK5);
       
-    }
-    catch (Exception e) {
-      throw e;
-    }
-    finally {
-      close();
-    }
+      return curBerufstyp;
+      
+      } catch (SQLException e)
+      {     
+          return curBerufstyp;
+      }
+  }
+  
+  
+  public void SetBerufstyp(Berufstyp curBerufstyp)
+  {
+      try {
+     
+      m_SetBerufstyp.setString(1, String.valueOf(curBerufstyp.getName()));
+      m_SetBerufstyp.setString(2, String.valueOf(curBerufstyp.getSk1()));
+      m_SetBerufstyp.setString(3, String.valueOf(curBerufstyp.getSk2()));
+      m_SetBerufstyp.setString(4, String.valueOf(curBerufstyp.getSk3()));
+      m_SetBerufstyp.setString(5, String.valueOf(curBerufstyp.getSk4()));
+      m_SetBerufstyp.setString(6, String.valueOf(curBerufstyp.getSk5()));
+      m_SetBerufstyp.setString(7, String.valueOf(curBerufstyp.getId()));
+      
+      m_ResultSet = m_SetBerufstyp.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+  
+  public int GetBerufstypCount()
+  {
+      try {
+          m_ResultSet = m_GetBerufstypCount.executeQuery();
+          return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
+  }
+  
+  public Dorf GetDorf(int dorfId)
+  {
+      Dorf curDorf = new Dorf();
+      try {
+      
+      long tmpPID;
+      String Name;
+      
+      m_GetDorf.setString(1, String.valueOf(dorfId));
+      m_ResultSet = m_GetDorf.executeQuery();
+      
+      tmpPID = m_ResultSet.getLong(1);
+      Name = m_ResultSet.getObject(2).toString();
+      
+      curDorf = new Dorf((int)tmpPID, Name);
+      
+      return curDorf;
+      
+      } catch (SQLException e)
+      {     
+          return curDorf;
+      }
+  }
+  
+  public void SetDorf(Dorf curDorf)
+  {
+      try {
+   
+      m_SetBerufstyp.setString(1, String.valueOf(curDorf.getName()));
+      m_SetBerufstyp.setString(2, String.valueOf(curDorf.getId()));
+      
+      m_ResultSet = m_SetBerufstyp.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+  
+  public int GetDorfCount()
+  {
+      try {
+      m_ResultSet = m_GetDorfCount.executeQuery();
+      return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
+  }
+  
+  public Lager GetLager(int lagerId)
+  {
+      Lager curLager = new Lager();
+      try {
+      
+      long tmpPID;
+      String Name;
+      
+      m_GetDorf.setString(1, String.valueOf(lagerId));
+      m_ResultSet = m_GetDorf.executeQuery();
+      
+      tmpPID = m_ResultSet.getLong(1);
+      Name = m_ResultSet.getObject(2).toString();
+      
+      curLager = new Lager((int)tmpPID, Name);
+      
+      return curLager;
+      
+      } catch (SQLException e)
+      {     
+          return curLager;
+      }
+  }
+  
+  public void SetLager(Lager curLager)
+  {
+    try {
+   
+      m_SetLager.setString(1, curLager.getName());
+      m_SetLager.setString(2, String.valueOf(curLager.getId()));
+      
+      m_ResultSet = m_SetLager.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+  
+  public int GetLagerCount()
+  {
+      try {
+      m_ResultSet = m_GetLagerCount.executeQuery();
+      return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
+  }
+  
+  /*
+  public LagerBestand GetLagerBestand(int lagerBestandId)
+  {
+           
+  }
+  
+  public void SetLagerBestand(LagerBestand curLagerBestand)
+  {
+  }
+  
+  public int GetLagerBestandCount()
+  {
+  }
+  */
+  
+  public Mitglied GetMitglied(int mitgliedId)
+  {
+      Mitglied curMitglied = new Mitglied();
+      try {
+      
+      long tmpPID;
+      long FK_DORF_ID;
+      String Name;
+      
+      m_GetMitglied.setString(1, String.valueOf(mitgliedId));
+      m_ResultSet = m_GetMitglied.executeQuery();
+      
+      tmpPID = m_ResultSet.getLong(1);
+      FK_DORF_ID = m_ResultSet.getLong(2);
+      Name = m_ResultSet.getObject(2).toString();
+      
+      curMitglied = new Mitglied((int)tmpPID, (int)FK_DORF_ID, Name);
+      
+      return curMitglied;
+      
+      } catch (SQLException e)
+      {     
+          return curMitglied;
+      }
+  }
+  
+  public void SetMitglied(Mitglied curMitglied)
+  {
+      try {
+   
+      m_SetMitglied.setString(1, curMitglied.getName());
+      m_SetMitglied.setString(2, String.valueOf(curMitglied.getId()));
+      
+      m_ResultSet = m_SetMitglied.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+  
+  public int GetMitgliedCount()
+  {
+      try {
+      m_ResultSet = m_GetMitgliedCount.executeQuery();
+      return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
+  }
+  
+  /*
+  public Ressource GetRessource(int ressourceId)
+  {
+  
+  }
+  
+  public void SetRessource(Ressource curRessource)
+  {
+      
+  }
+  
+  public int GetRessourceCount()
+  {
+ 
   }
   */
 }
