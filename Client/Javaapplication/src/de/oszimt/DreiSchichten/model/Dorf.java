@@ -23,10 +23,11 @@ public class Dorf {
     public Dorf(int id, String name){
         this();
         this.setId(id);
+        this.setName(name);
     }
     
-    public Dorf(int id, int[] lagerIDs, int[] mitgliederIDs){
-        this(id);
+    public Dorf(int id, String name, int[] lagerIDs, int[] mitgliederIDs){
+        this(id, name);
         this.setLagerIDs(lagerIDs);
         this.setMitgliederIDs(mitgliederIDs);
     }

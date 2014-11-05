@@ -2,6 +2,7 @@
 package de.oszimt.DreiSchichten.application;
 
 import de.oszimt.DreiSchichten.database.DBAccess;
+import de.oszimt.DreiSchichten.model.Dorf;
 
 /**
  *
@@ -16,8 +17,10 @@ public class Main {
         
         // 1. DBAcess.Object initialisieren
         DBAccess dbAccess = new DBAccess();
-        dbAccess.InitConnection();
-        
+        if(dbAccess.isInitialized())
+        {
+            Dorf testDorf = dbAccess.getDorf(1);
+        }              
     }
     
 
