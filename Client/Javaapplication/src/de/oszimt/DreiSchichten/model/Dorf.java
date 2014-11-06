@@ -7,6 +7,7 @@ package de.oszimt.DreiSchichten.model;
  */
 public class Dorf {
     private int id;
+    private String name;
     private int[] lagerIDs;
     private int[] mitgliederIDs;
     
@@ -19,8 +20,14 @@ public class Dorf {
         this.setId(id);
     }
     
-    public Dorf(int id, int[] lagerIDs, int[] mitgliederIDs){
-        this(id);
+    public Dorf(int id, String name){
+        this();
+        this.setId(id);
+        this.setName(name);
+    }
+    
+    public Dorf(int id, String name, int[] lagerIDs, int[] mitgliederIDs){
+        this(id, name);
         this.setLagerIDs(lagerIDs);
         this.setMitgliederIDs(mitgliederIDs);
     }
@@ -39,6 +46,20 @@ public class Dorf {
         this.id = id;
     }
 
+    /**
+     * @param name the name to set
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     /**
      * @return the lagerIDs
      */
