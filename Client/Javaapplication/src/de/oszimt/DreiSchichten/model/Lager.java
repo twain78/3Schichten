@@ -8,6 +8,7 @@ package de.oszimt.DreiSchichten.model;
 public class Lager {
     private int id;
     private String name;
+    private int dorfID;
     private int[] ressource;
     private int[] bestand;
     
@@ -85,6 +86,14 @@ public class Lager {
      */
     public void setRessource(int[] ressource) {
         this.ressource = ressource;
+    }
+    
+    public int getDorfID() {
+        return dorfID;
+    }
+
+    public void setDorfID(int dorfID) {
+        this.dorfID = dorfID;
     }
     
 }
