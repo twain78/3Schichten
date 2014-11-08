@@ -23,7 +23,7 @@ package de.oszimt.DreiSchichten.database;
 public class XMLAccess {
     
     // oder wie bei DB schon für jede Tabelle eine eigene Methode -.-, ne das ist bescheuert
-    
+  
     // müssen über ihren Tabellentyp und primaryIndex identifiziert werden
     public void SetXMLEntry()
     {
