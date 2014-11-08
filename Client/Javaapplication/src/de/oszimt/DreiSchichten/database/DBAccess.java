@@ -13,9 +13,12 @@ import de.oszimt.DreiSchichten.model.Berufstyp;
 import de.oszimt.DreiSchichten.model.Dorf;
 import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.Mitglied;
+import de.oszimt.DreiSchichten.model.Resscource;       // falsch geschrieben -- Edit-Marker
+// import de.oszimt.DreiSchichten.model.LagerBestand   // Edit-Marker -- noch nicht implementiert
+
 
 /**
- * LastChange: 05.11.2014
+ * LastChange: 08.11.2014
  * @author Robert Schardt
  */
 
@@ -144,9 +147,9 @@ public class DBAccess {
                 .prepareStatement("SELECT COUNT(*) FROM Beruf");      
         m_SetBeruf = m_Connection
                 .prepareStatement("UPDATE Beruf SET Punkte = ? WHERE P_ID = ?");
-        m_AddBeruf = m_Connection
+        m_AddBeruf = m_Connection                                                          // allerdings muss man hier einen Primary Key zurückgeben also entweder Int oder ein Object der Klasse
                 .prepareStatement("INSERT INTO Beruf (FK_TYP_ID, Punkte) VALUES(?, ?)");   // auto_increment sollte den primary_Key selbst hochzählen bzw. Trigger mit Verantwortung (comment1)
-        m_RemBeruf = m_Connection
+        m_RemBeruf = m_Connection                                                   
                 .prepareStatement("DELETE FROM Beruf WHERE P_ID = ?");                     // Trigger muss hier alle Abhängigkeiten auflösen (comment2)
 
         ////
@@ -240,10 +243,6 @@ public class DBAccess {
     
   }
   
-  ///// die Frage ist, ob man überhaupt soviel Macht dem Anwender geben will:
-  // AddBeruf, Object ohne Id wird reingegeben und mit Id wieder ausgespuckt
-  // RemBeruf, 
-  // UpdateBeruf
   public Beruf getBeruf(int berufId) 
   {
       Beruf curBeruf = new Beruf();
@@ -295,7 +294,9 @@ public class DBAccess {
       }
   }
   
-  public void addBeruf(Beruf newBeruf)
+  // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
+  // noch nicht wissen kann
+  public int addBeruf(Beruf newBeruf)
   {
       try 
       {
@@ -303,9 +304,12 @@ public class DBAccess {
          //m_AddBeruf.setInt(2, newBeruf.getMitgliedId()); -- Edit-Marker
          m_AddBeruf.setInt(3, newBeruf.getPunkte());
          m_AddBeruf.executeQuery();
+         
+         return getBerufCount() -1;     // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
+         
       } catch (SQLException e)
       {
-          
+         return -1;
       }
   }
   
@@ -383,7 +387,9 @@ public class DBAccess {
       }
   }
   
-    public void addBerufstyp(Berufstyp newBerufstyp)
+  // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
+  // noch nicht wissen kann
+  public int addBerufstyp(Berufstyp newBerufstyp)
   {
       try 
       {
@@ -396,9 +402,11 @@ public class DBAccess {
           
           m_AddBerufstyp.executeQuery();
           
+          return getBerufstypCount() -1;    // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
+          
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
@@ -467,7 +475,9 @@ public class DBAccess {
       }
   }
   
-    public void addDorf(Dorf newDorf)
+  // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
+  // noch nicht wissen kann
+  public int addDorf(Dorf newDorf)
   {
       try 
       {
@@ -476,9 +486,11 @@ public class DBAccess {
           
           m_AddDorf.executeQuery();
       
+          return getDorfCount() -1; // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
+          
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
@@ -502,15 +514,17 @@ public class DBAccess {
       try {
       
       long tmpPID;
+      long tmpFKDorfId;
       String Name;
       
       m_GetLager.setInt(1, lagerId);
       m_ResultSet = m_GetLager.executeQuery();
       
       tmpPID = m_ResultSet.getLong(1);
-      Name = m_ResultSet.getObject(2).toString();
+      tmpFKDorfId = m_ResultSet.getLong(2);
+      Name = m_ResultSet.getObject(3).toString();
       
-      curLager = new Lager((int)tmpPID, Name);
+      // curLager = new Lager((int)tmpPID, (int)tmpFKDorfId, Name);     // Edit-Marker -- noch nicht implementiert
       
       return curLager;
       
@@ -547,18 +561,21 @@ public class DBAccess {
       }
   }
   
-  public void addLager(Lager newLager)
+  // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
+  // noch nicht wissen kann
+  public int addLager(Lager newLager)
   {
       try 
       {
-          // m_AddLager.setInt(1, newLager.getDorfId());  -- Edit-Marker
-          m_AddLager.setString(2, newLager.getName());
-          
+          m_AddLager.setInt(1, newLager.getDorfID());
+          m_AddLager.setString(2, newLager.getName());        
           m_AddLager.executeQuery();
+          
+          return getLagerCount() -1; // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
       
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
@@ -579,26 +596,28 @@ public class DBAccess {
   /*
   public LagerBestand getLagerBestand(int lagerBestandId)
   {
-           
+
   }
   
   public int getLagerBestandCount()
   {
+      
   }
   
   public void setLagerBestand(LagerBestand curLagerBestand)
   {
   }
 
-  public void addLagerBestand(LagerBestand newLagerBestand)
+  public int addLagerBestand(LagerBestand newLagerBestand)
   {
       try 
       {
           
-      
+          return getLagerBestandCount();
+  
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
@@ -613,8 +632,8 @@ public class DBAccess {
           
       }
   }
-  
   */
+  
   
   public Mitglied getMitglied(int mitgliedId)
   {
@@ -669,7 +688,7 @@ public class DBAccess {
       }
   }
   
-    public void addMitglied(Mitglied newMitglied)
+    public int addMitglied(Mitglied newMitglied)
   {
       try 
       {
@@ -677,10 +696,12 @@ public class DBAccess {
           m_AddMitglied.setString(2, newMitglied.getName());
           
           m_ResultSet = m_AddMitglied.executeQuery();
+          
+          return getMitgliedCount() -1; // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
       
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
@@ -698,45 +719,92 @@ public class DBAccess {
   }
   
  
-  /*
-  public Ressource getRessource(int ressourceId)
-  {
   
-  }
- 
-  public int getRessourceCount()
+  public Resscource getRessource(int ressourceId) // falsch geschrieben -- Edit-Marker
   {
- 
-  }
-  
-  public void setRessource(Ressource curRessource)
-  {
+      Resscource curRessource = new Resscource();
+      try {
       
-  }
- 
-  public void addRessource(Ressource newRessource)
-  {
-      try 
-      {
-          
+      long tmpPID;
+      String Name;
+      long Gewicht;
+      long Preis;
+           
+      m_GetRessource.setInt(1, ressourceId);
+      m_ResultSet = m_GetRessource.executeQuery();
+      
+      tmpPID = m_ResultSet.getLong(1);
+      Name = m_ResultSet.getObject(2).toString();
+      Gewicht = m_ResultSet.getLong(3);
+      Preis = m_ResultSet.getLong(4);
+      
+      // curRessource = new Resscource((int)tmpPID, Name, (int)Gewicht, (int)Preis);  -- Edit-Marker
+      
+      return curRessource;
       
       } catch (SQLException e)
-      {
+      {     
+          return curRessource;
+      }
+  }
+ 
+  public int getRessourceCount() // falsch geschrieben -- Edit-Marker
+  {
+      try {
+      m_ResultSet = m_GetRessourceCount.executeQuery();
+      return (int)m_ResultSet.getLong(1);
           
+      } catch (SQLException e)
+      {     
+          return 0;
       }
   }
   
-  public void remRessource(int ressourceId)
+  public void setRessource(Resscource curRessource) // falsch geschrieben -- Edit-Marker
+  {
+      try {
+      m_SetRessource.setString(1, curRessource.getName());
+      // m_SetRessource.setInt(2, curRessource.getGewicht());   -- Edit-Marker -- noch nicht implementiert
+      // m_SetRessource.setInt(3 curRessource.getPreis());      -- Edit-Marker -- noch nicht implementiert
+      m_SetRessource.setInt(4, curRessource.getId());
+      
+      m_ResultSet = m_SetMitglied.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
+  }
+ 
+  public int addRessource(Resscource newRessource) // falsch geschrieben -- Edit-Marker
   {
       try 
       {
+          m_AddRessource.setString(1, newRessource.getName());
+          // m_AddRessource.setInt(2, newRessource.getGewicht());   -- Edit-Marker -- noch nicht implementiert
+          // m_AddRessource.setInt(3, newRessource.getPreis());     -- Edit-Marker -- noch nicht implementiert
           
+          m_ResultSet = m_AddRessource.executeQuery();
       
+          return getRessourceCount() -1; // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
+          
       } catch (SQLException e)
       {
-          
+          return -1;
       }
   }
   
-  */
+  public void remRessource(int ressourceId) // falsch geschrieben -- Edit-Marker
+  {
+      try 
+      {
+          m_RemRessource.setInt(1, ressourceId);
+          m_RemRessource.executeQuery();
+      
+      } catch (SQLException e)
+      {
+        
+      }
+  }
+  
 }
