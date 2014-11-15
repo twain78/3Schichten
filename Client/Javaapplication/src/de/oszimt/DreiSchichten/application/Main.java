@@ -1,13 +1,14 @@
 
 package de.oszimt.DreiSchichten.application;
 
-import de.oszimt.DreiSchichten.database.DBAccess;
-import de.oszimt.DreiSchichten.database.DOMParser;
+import de.oszimt.DreiSchichten.controler.DBAccess;
+import de.oszimt.DreiSchichten.controler.DOMParser;
 import de.oszimt.DreiSchichten.model.Dorf;
+import javax.swing.JFrame;
 
 /**
  * LastChange: 09.11.2014
- * @author b-kg104, Robert Schardt
+ * @author Konstantin Görlitz, Robert Schardt
  */
 public class Main {
 
@@ -17,11 +18,11 @@ public class Main {
     public static void main(String[] args) {
                     
         // 1a. DBAcess.Object initialisieren / hauptsächlich Verbindung herstellen -- Data
-        DBAccess dbAccess = new DBAccess();
+        /*DBAccess dbAccess = new DBAccess();
         if(dbAccess.isInitialized())
         {
             Dorf testDorf = dbAccess.getDorf(1);
-        }              
+        }  */            
         
         // 1b. XML-DB erstellen, wenn nötig -- Data
         /*
@@ -41,5 +42,9 @@ public class Main {
         // 5. Daten in GUI/TUI anzeigen lassen Modell --> GUI/TUI
         
         // ...
+        JFrame frame = new JFrame("BerufsDB");
+        frame.setSize(600,800);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
