@@ -14,7 +14,7 @@ import de.oszimt.DreiSchichten.model.Dorf;
 import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Resscource;       // falsch geschrieben -- Edit-Marker
-// import de.oszimt.DreiSchichten.model.LagerBestand   // Edit-Marker -- noch nicht implementiert
+
 
 
 /**
@@ -519,7 +519,7 @@ public class DBAccess {
       
       m_GetLager.setInt(1, lagerId);
       m_ResultSet = m_GetLager.executeQuery();
-      
+
       tmpPID = m_ResultSet.getLong(1);
       tmpFKDorfId = m_ResultSet.getLong(2);
       Name = m_ResultSet.getObject(3).toString();
