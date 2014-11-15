@@ -1,4 +1,4 @@
-package de.oszimt.DreiSchichten.controler;
+package de.oszimt.DreiSchichten.controller;
 
 /**
  * LastChange: 05.11.2014

@@ -1,8 +1,8 @@
 
 package de.oszimt.DreiSchichten.application;
 
-import de.oszimt.DreiSchichten.controler.DBAccess;
-import de.oszimt.DreiSchichten.controler.DOMParser;
+import de.oszimt.DreiSchichten.controller.DBAccess;
+import de.oszimt.DreiSchichten.controller.DOMParser;
 import de.oszimt.DreiSchichten.model.Dorf;
 import javax.swing.JFrame;
 

@@ -1,4 +1,4 @@
-package de.oszimt.DreiSchichten.controler;
+package de.oszimt.DreiSchichten.controller;
 
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
