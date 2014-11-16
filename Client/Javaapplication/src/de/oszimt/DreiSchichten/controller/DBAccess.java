@@ -25,6 +25,7 @@ import de.oszimt.DreiSchichten.model.Ressource;
 
 
 //// ToDo:    
+// - Datenbank-Pfad anpassen
 // - Trigger in DB implementieren
 // - Verbindungsaufbau- bzw abbau - Methode
 
