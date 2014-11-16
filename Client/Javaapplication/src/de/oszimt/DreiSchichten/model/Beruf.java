@@ -8,6 +8,7 @@ package de.oszimt.DreiSchichten.model;
 public class Beruf {
     private int id;
     private int typID;
+    private int mitgliedID;
     private int punkte;
 
     public Beruf(){
@@ -24,8 +25,13 @@ public class Beruf {
         this.setTypID(typID);
     }
     
-    public Beruf(int id, int typID, int punkte){
+    public Beruf(int id, int typID, int mitgliedID){
         this(id, typID);
+        this.setMitgliedID(mitgliedID);
+    }
+    
+    public Beruf(int id, int typID, int mitgliedID, int punkte){
+        this(id, typID, mitgliedID);
         this.setPunkte(punkte);
     }
 
@@ -57,6 +63,14 @@ public class Beruf {
         this.typID = typID;
     }
 
+    public int getMitgliedID() {
+        return mitgliedID;
+    }
+    
+    public void setMitgliedID(int mitgliedID) {
+        this.mitgliedID = mitgliedID;
+    }
+    
     /**
      * @return the punkte
      */

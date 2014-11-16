@@ -1,4 +1,4 @@
-package de.oszimt.DreiSchichten.controler;
+package de.oszimt.DreiSchichten.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,9 +12,10 @@ import de.oszimt.DreiSchichten.model.Beruf;
 import de.oszimt.DreiSchichten.model.Berufstyp;
 import de.oszimt.DreiSchichten.model.Dorf;
 import de.oszimt.DreiSchichten.model.Lager;
+import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Mitglied;
-import de.oszimt.DreiSchichten.model.Resscource;       // falsch geschrieben -- Edit-Marker
-// import de.oszimt.DreiSchichten.model.LagerBestand   // Edit-Marker -- noch nicht implementiert
+import de.oszimt.DreiSchichten.model.Ressource;
+
 
 
 /**
@@ -23,11 +24,8 @@ import de.oszimt.DreiSchichten.model.Resscource;       // falsch geschrieben -- 
  */
 
 
-//// ToDo:
-// - mit prepared Statements arbeiten 
-// - vernünftige Rückgabe Klasse für die anderen Module bauen
-    // - Befüllung von Modell-Klassen die an den Controller zurückgegeben werden
-// - Ressourcen und Lagerbestand Methoden noch implementieren, benötigt allerdings vorher anpassung im Modell
+//// ToDo:    
+// - Datenbank-Pfad anpassen
 // - Trigger in DB implementieren
 // - Verbindungsaufbau- bzw abbau - Methode
 
@@ -142,13 +140,13 @@ public class DBAccess {
 
         //// Beruf-Statements
         m_GetBeruf = m_Connection
-                .prepareStatement("SELECT P_ID, FK_TYP_ID, Punkte FROM Beruf WHERE P_ID = ?");
+                .prepareStatement("SELECT P_ID, FK_TYP_ID, FK_Mitglied_ID, Punkte FROM Beruf WHERE P_ID = ?");
         m_GetBerufCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Beruf");      
         m_SetBeruf = m_Connection
                 .prepareStatement("UPDATE Beruf SET Punkte = ? WHERE P_ID = ?");
         m_AddBeruf = m_Connection                                                          // allerdings muss man hier einen Primary Key zurückgeben also entweder Int oder ein Object der Klasse
-                .prepareStatement("INSERT INTO Beruf (FK_TYP_ID, Punkte) VALUES(?, ?)");   // auto_increment sollte den primary_Key selbst hochzählen bzw. Trigger mit Verantwortung (comment1)
+                .prepareStatement("INSERT INTO Beruf (FK_TYP_ID, FK_Mitglied_ID, Punkte) VALUES(?, ?)");   // auto_increment sollte den primary_Key selbst hochzählen bzw. Trigger mit Verantwortung (comment1)
         m_RemBeruf = m_Connection                                                   
                 .prepareStatement("DELETE FROM Beruf WHERE P_ID = ?");                     // Trigger muss hier alle Abhängigkeiten auflösen (comment2)
 
@@ -194,7 +192,7 @@ public class DBAccess {
         ////
 
         //// LagerBestand-Statements
-        m_GetLagerBestand = m_Connection
+        m_GetLagerBestand = m_Connection                
                 .prepareStatement("SELECT P_ID, FK_RES_ID, FK_Lager_ID, Menge FROM LagerBestand WHERE P_ID = ?");
         m_GetLagerBestandCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM LagerBestand");    
@@ -249,16 +247,17 @@ public class DBAccess {
       
       try 
       {
-        long tmpPID, FK_TYP_ID, Punkte;
+        long tmpPID, FK_TYP_ID, FK_Mitglied_ID, Punkte;
 
         m_GetBeruf.setInt(1, berufId);
         m_ResultSet = m_GetBeruf.executeQuery();
 
         tmpPID = m_ResultSet.getLong(1);
         FK_TYP_ID = m_ResultSet.getLong(2);
-        Punkte = m_ResultSet.getLong(3);
+        FK_Mitglied_ID = m_ResultSet.getLong(3);   
+        Punkte = m_ResultSet.getLong(4);
 
-        curBeruf = new Beruf((int)tmpPID, (int)FK_TYP_ID, (int)Punkte);
+        curBeruf = new Beruf((int)tmpPID, (int)FK_TYP_ID, (int)FK_Mitglied_ID, (int)Punkte);
 
         return curBeruf;
 
@@ -301,7 +300,7 @@ public class DBAccess {
       try 
       {
          m_AddBeruf.setInt(1, newBeruf.getTypID());
-         //m_AddBeruf.setInt(2, newBeruf.getMitgliedId()); -- Edit-Marker
+         m_AddBeruf.setInt(2, newBeruf.getMitgliedID());       
          m_AddBeruf.setInt(3, newBeruf.getPunkte());
          m_AddBeruf.executeQuery();
          
@@ -519,12 +518,12 @@ public class DBAccess {
       
       m_GetLager.setInt(1, lagerId);
       m_ResultSet = m_GetLager.executeQuery();
-      
+
       tmpPID = m_ResultSet.getLong(1);
       tmpFKDorfId = m_ResultSet.getLong(2);
       Name = m_ResultSet.getObject(3).toString();
-      
-      // curLager = new Lager((int)tmpPID, (int)tmpFKDorfId, Name);     // Edit-Marker -- noch nicht implementiert
+            
+      curLager = new Lager((int)tmpPID, (int)tmpFKDorfId, Name);
       
       return curLager;
       
@@ -567,7 +566,7 @@ public class DBAccess {
   {
       try 
       {
-          m_AddLager.setInt(1, newLager.getDorfID());
+          m_AddLager.setInt(1, newLager.getDorfId());
           m_AddLager.setString(2, newLager.getName());        
           m_AddLager.executeQuery();
           
@@ -592,48 +591,98 @@ public class DBAccess {
       }
   }
   
-  
-  /*
-  public LagerBestand getLagerBestand(int lagerBestandId)
+ 
+  public LagerBestand getLagerBestand(int lagerbestandId)
   {
+      LagerBestand curLagerBestand = new LagerBestand();
+      try {
+      
+      long tmpPID;
+      long tmpFKResID;
+      long tmpFKLagerID;
+      long Menge;
+      
+      m_GetLagerBestand.setInt(1, lagerbestandId);
+      m_ResultSet = m_GetLagerBestand.executeQuery();
 
+      tmpPID = m_ResultSet.getLong(1);
+      tmpFKResID = m_ResultSet.getLong(2);
+      tmpFKLagerID = m_ResultSet.getLong(3);
+      Menge = m_ResultSet.getLong(4);
+      
+      curLagerBestand = new LagerBestand((int)tmpPID, (int)tmpFKResID, (int)tmpFKLagerID, (int)Menge);
+      
+      return curLagerBestand;
+      
+      } catch (SQLException e)
+      {     
+          return curLagerBestand;
+      }
   }
-  
+ 
   public int getLagerBestandCount()
   {
-      
+      try {
+      m_ResultSet = m_GetLagerBestandCount.executeQuery();
+      return (int)m_ResultSet.getLong(1);
+          
+      } catch (SQLException e)
+      {     
+          return 0;
+      }
   }
+  
   
   public void setLagerBestand(LagerBestand curLagerBestand)
   {
+    try {
+   
+      m_SetLagerBestand.setInt(1, curLagerBestand.getMenge());
+      m_SetLagerBestand.setInt(2, curLagerBestand.getId());
+      
+      m_ResultSet = m_SetLagerBestand.executeQuery();
+      
+      } catch (SQLException e)
+      {     
+ 
+      }
   }
-
+  
+  
+  // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
+  // noch nicht wissen kann
   public int addLagerBestand(LagerBestand newLagerBestand)
   {
       try 
       {
+          m_AddLagerBestand.setInt(1, newLagerBestand.getResId());
+          m_AddLagerBestand.setInt(2, newLagerBestand.getLagerId());
+          m_AddLagerBestand.setInt(3, newLagerBestand.getMenge());
+          m_AddLagerBestand.executeQuery();
           
-          return getLagerBestandCount();
-  
+          return getLagerBestandCount() -1; // da Sqllite anscheinend immer einen "leeren" ersten Eintrag anlegt
+      
       } catch (SQLException e)
       {
           return -1;
       }
   }
   
-  public void remLagerBestand(int lagerBestandId)
+  public void remLagerBestand(int lagerbestandId)
   {
       try 
       {
-          
+          m_RemLagerBestand.setInt(1, lagerbestandId);
+          m_RemLagerBestand.executeQuery();
       
       } catch (SQLException e)
       {
           
       }
   }
-  */
   
+  
+ 
   
   public Mitglied getMitglied(int mitgliedId)
   {
@@ -720,9 +769,9 @@ public class DBAccess {
   
  
   
-  public Resscource getRessource(int ressourceId) // falsch geschrieben -- Edit-Marker
+  public Ressource getRessource(int ressourceId)
   {
-      Resscource curRessource = new Resscource();
+      Ressource curRessource = new Ressource();
       try {
       
       long tmpPID;
@@ -738,7 +787,7 @@ public class DBAccess {
       Gewicht = m_ResultSet.getLong(3);
       Preis = m_ResultSet.getLong(4);
       
-      // curRessource = new Resscource((int)tmpPID, Name, (int)Gewicht, (int)Preis);  -- Edit-Marker
+      curRessource = new Ressource((int)tmpPID, Name, (int)Gewicht, (int)Preis);
       
       return curRessource;
       
@@ -748,7 +797,7 @@ public class DBAccess {
       }
   }
  
-  public int getRessourceCount() // falsch geschrieben -- Edit-Marker
+  public int getRessourceCount()
   {
       try {
       m_ResultSet = m_GetRessourceCount.executeQuery();
@@ -760,12 +809,12 @@ public class DBAccess {
       }
   }
   
-  public void setRessource(Resscource curRessource) // falsch geschrieben -- Edit-Marker
+  public void setRessource(Ressource curRessource)
   {
       try {
       m_SetRessource.setString(1, curRessource.getName());
-      // m_SetRessource.setInt(2, curRessource.getGewicht());   -- Edit-Marker -- noch nicht implementiert
-      // m_SetRessource.setInt(3 curRessource.getPreis());      -- Edit-Marker -- noch nicht implementiert
+      m_SetRessource.setInt(2, curRessource.getGewicht());
+      m_SetRessource.setInt(3, curRessource.getPreis());
       m_SetRessource.setInt(4, curRessource.getId());
       
       m_ResultSet = m_SetMitglied.executeQuery();
@@ -776,13 +825,13 @@ public class DBAccess {
       }
   }
  
-  public int addRessource(Resscource newRessource) // falsch geschrieben -- Edit-Marker
+  public int addRessource(Ressource newRessource)
   {
       try 
       {
           m_AddRessource.setString(1, newRessource.getName());
-          // m_AddRessource.setInt(2, newRessource.getGewicht());   -- Edit-Marker -- noch nicht implementiert
-          // m_AddRessource.setInt(3, newRessource.getPreis());     -- Edit-Marker -- noch nicht implementiert
+          m_AddRessource.setInt(2, newRessource.getGewicht());
+          m_AddRessource.setInt(3, newRessource.getPreis());
           
           m_ResultSet = m_AddRessource.executeQuery();
       
@@ -794,7 +843,7 @@ public class DBAccess {
       }
   }
   
-  public void remRessource(int ressourceId) // falsch geschrieben -- Edit-Marker
+  public void remRessource(int ressourceId)
   {
       try 
       {

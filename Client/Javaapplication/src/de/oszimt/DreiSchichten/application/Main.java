@@ -1,9 +1,10 @@
 
 package de.oszimt.DreiSchichten.application;
 
-import de.oszimt.DreiSchichten.controler.DBAccess;
-import de.oszimt.DreiSchichten.controler.DOMParser;
+import de.oszimt.DreiSchichten.controller.DBAccess;
+import de.oszimt.DreiSchichten.controller.XMLAccess;
 import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.Beruf;
 import javax.swing.JFrame;
 
 /**
@@ -26,11 +27,10 @@ public class Main {
         
         // 1b. XML-DB erstellen, wenn nötig -- Data
         /*
-        DOMParser domParser = new DOMParser();
+        XMLAccess domParser = new XMLAccess();
         domParser.CreateDatabase();
-        domParser.ReadXMLFile();
-        */
-        
+         */    
+   
         // 2. Counts der Tabellen entsprechend auslesen und Klassen-Arrays erstellen -- Modell
         
         // 3. Klassen befüllen mit Daten, DB --> Modell
