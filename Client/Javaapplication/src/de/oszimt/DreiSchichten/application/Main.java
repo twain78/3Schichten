@@ -2,6 +2,7 @@
 package de.oszimt.DreiSchichten.application;
 
 import de.oszimt.DreiSchichten.controller.DBAccess;
+import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.controller.XMLAccess;
 import de.oszimt.DreiSchichten.model.Dorf;
 import de.oszimt.DreiSchichten.model.Beruf;
@@ -45,6 +46,12 @@ public class Main {
         JFrame frame = new JFrame("BerufsDB");
         frame.setSize(600,800);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        //frame.setVisible(true);
+        
+        DBAccess db;
+        db = new DBAccess();
+        //db = new XMLAccess();
+        
+        ViewController view = new ViewController(frame, db);
     }
 }

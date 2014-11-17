@@ -5,17 +5,72 @@
  */
 package de.oszimt.DreiSchichten.view;
 
+import de.oszimt.DreiSchichten.model.Dorf;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
- * @author Smoky
+ * @author Konstantin Görlitz
  */
-public class Dörfer extends javax.swing.JPanel {
+public class Dorfliste extends javax.swing.JPanel {
 
     /**
      * Creates new form Dörfer
      */
-    public Dörfer() {
+    public Dorfliste() {
         initComponents();
+    }
+    
+    public void setDörfer(Dorf[] dörfer){
+        DefaultTableModel model = (DefaultTableModel)jtDorfliste.getModel();
+        for(final Dorf dorf : dörfer){
+            JButton button1 = new JButton("B");
+            button1.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    öffneDorf(dorf.getId());
+                }
+            });
+            
+            JButton button2 = new JButton("P");
+            button2.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    öffneEinwohner(dorf.getId());
+                }
+            });
+            
+            JButton button3 = new JButton("L");
+            button3.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    löscheDorf(dorf.getId());
+                }
+            });
+            
+            Object[] row = {dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
+                button1, button2, button3};
+            model.addRow(row);
+            
+        }
+    }
+    
+    private void öffneDorf(int id){
+        //openDorfView(id);
+    }
+    
+    private void öffneEinwohner(int id){
+        //openEinwohnerView(id);
+    }
+    
+    private void löscheDorf(int id){
+        //deleteDorf(id);
     }
 
     /**
@@ -30,32 +85,34 @@ public class Dörfer extends javax.swing.JPanel {
         jlTitel = new javax.swing.JLabel();
         jbNeuesDorf = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtDorfliste = new javax.swing.JTable();
 
         jlTitel.setText("Dörfer");
 
         jbNeuesDorf.setText("Neues Dorf");
+        jbNeuesDorf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNeuesDorfActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtDorfliste.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Name", "Bevölkerung", "Lageranzahl"
+                "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtDorfliste);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -86,11 +143,15 @@ public class Dörfer extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbNeuesDorfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesDorfActionPerformed
+        //openAddDorf();
+    }//GEN-LAST:event_jbNeuesDorfActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbNeuesDorf;
     private javax.swing.JLabel jlTitel;
+    private javax.swing.JTable jtDorfliste;
     // End of variables declaration//GEN-END:variables
 }

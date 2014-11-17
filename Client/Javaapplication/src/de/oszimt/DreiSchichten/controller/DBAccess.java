@@ -49,6 +49,7 @@ public class DBAccess {
   private PreparedStatement m_RemBerufstyp;
   
   // Dorf-Table
+  private PreparedStatement m_GetDörfer;
   private PreparedStatement m_GetDorf;
   private PreparedStatement m_GetDorfCount;
   private PreparedStatement m_SetDorf;
@@ -166,6 +167,8 @@ public class DBAccess {
         ////
 
         //// Dorf-Statements
+        m_GetDörfer = m_Connection
+                .prepareStatement("SELECT * FROM Dorf");
         m_GetDorf = m_Connection
                 .prepareStatement("SELECT P_ID, Name FROM Dorf WHERE P_ID = ?");
         m_GetDorfCount = m_Connection
@@ -420,6 +423,11 @@ public class DBAccess {
       {
           
       }
+  }
+  
+  public Dorf[] getDörfer()
+  {
+      //todo m_GetDörfer
   }
   
   
