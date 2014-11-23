@@ -37,7 +37,7 @@ import de.oszimt.DreiSchichten.model.Ressource;
 // - XML-Pfad anpassen
 // - XML-Datei mit Testdaten füllen
 
-public class XMLAccess {
+public class XMLAccess implements IAccess {
     private File m_XMLFile;
     private DocumentBuilderFactory m_DBFactory;
     private DocumentBuilder m_DocBuilder;
@@ -160,7 +160,8 @@ public class XMLAccess {
     
     /////// Beruf
     //////////////////////////
-    public Beruf GetBeruf(int berufID)
+    @Override
+    public Beruf getBeruf(int berufId)
     {
         Beruf curBeruf = new Beruf(-1, -1, -1, -1);
          try {
@@ -182,7 +183,7 @@ public class XMLAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == berufID)
+                           if(pID == berufId)
                            {
                                 curBeruf.setId(pID);
                                 curBeruf.setTypID(Integer.parseInt(eElement.getElementsByTagName("FK_TYP_ID").item(0).getTextContent()));
@@ -198,7 +199,8 @@ public class XMLAccess {
        return curBeruf;
     }
     
-    public int GetBerufCount()
+    @Override
+    public int getBerufCount()
     {         
          try {
            
@@ -217,7 +219,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetBeruf(Beruf curBeruf)
+    @Override
+    public void setBeruf(Beruf curBeruf)
     {
             
          try {
@@ -252,7 +255,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddBeruf(Beruf newBeruf)
+    @Override
+    public int addBeruf(Beruf newBeruf)
     {
          Integer pID = -1;
          try {
@@ -276,7 +280,7 @@ public class XMLAccess {
         
                       
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getBerufCount();
                         entryBeruf.setAttribute("P_ID", pID.toString());
 
                         // FK_TYP_ID elements
@@ -311,7 +315,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveBeruf(int berufID)
+    @Override
+    public void remBeruf(int berufId)
     {
         try {
            
@@ -329,7 +334,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == berufID)
+                           if(curId == berufId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -345,7 +350,8 @@ public class XMLAccess {
     
     /////Berufstyp
     //////////////////////////
-     public Berufstyp GetBerufstyp(int berufstypID)
+    @Override
+    public Berufstyp getBerufstyp(int berufstypId)
     {
         Berufstyp curBerufstyp = new Berufstyp(-1, "", -1, -1, -1, -1, 1);
          try {
@@ -367,7 +373,7 @@ public class XMLAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == berufstypID)
+                           if(pID == berufstypId)
                            {
                                 curBerufstyp.setId(pID);
                                 curBerufstyp.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
@@ -386,7 +392,8 @@ public class XMLAccess {
        return curBerufstyp;
     }
     
-    public int GetBerufstypCount()
+    @Override
+    public int getBerufstypCount()
     {         
          try {
            
@@ -405,7 +412,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetBerufstyp(Berufstyp curBerufstyp)
+    @Override
+    public void setBerufstyp(Berufstyp curBerufstyp)
     {
             
          try {
@@ -454,7 +462,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddBerufstyp(Berufstyp newBerufstyp)
+    @Override
+    public int addBerufstyp(Berufstyp newBerufstyp)
     {
          Integer pID = -1;
          try {
@@ -478,7 +487,7 @@ public class XMLAccess {
         
                       
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getBerufstypCount();
                         entryBerufstyp.setAttribute("P_ID", pID.toString());
                         
                         String strName = newBerufstyp.getName();
@@ -523,7 +532,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveBerufstyp(int berufstypID)
+    @Override
+    public void remBerufstyp(int berufstypId)
     {
         try {
            
@@ -541,7 +551,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == berufstypID)
+                           if(curId == berufstypId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -557,7 +567,8 @@ public class XMLAccess {
     
     //////// Dorf
     //////////////////////////
-    public Dorf GetDorf(int dorfID)
+    @Override
+    public Dorf getDorf(int dorfId)
     {
         Dorf curDorf = new Dorf(-1, "");
          try {
@@ -579,7 +590,7 @@ public class XMLAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == dorfID)
+                           if(pID == dorfId)
                            {
                                 curDorf.setId(pID);
                                 curDorf.setName(eElement.getElementsByTagName("FK_TYP_ID").item(0).getTextContent());                        
@@ -593,7 +604,16 @@ public class XMLAccess {
        return curDorf;
     }
     
-    public int GetDorfCount()
+    /*
+    @Override
+    public Dorf[] getDörfer()       -- Edit-Marker
+    {
+        
+    }
+    */
+    
+    @Override
+    public int getDorfCount()
     {         
          try {
            
@@ -612,7 +632,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetDorf(Dorf curDorf)
+    @Override
+    public void setDorf(Dorf curDorf)
     {
             
          try {
@@ -645,7 +666,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddDorf(Dorf newDorf)
+    @Override
+    public int addDorf(Dorf newDorf)
     {
          Integer pID = -1;
          try {
@@ -668,7 +690,7 @@ public class XMLAccess {
                         eElement.appendChild(entryDorf);
                             
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getDorfCount();
                         entryDorf.setAttribute("P_ID", pID.toString());
                     
                         String strName = newDorf.getName();
@@ -688,7 +710,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveDorf(int dorfID)
+    @Override
+    public void remDorf(int dorfId)
     {
         try {
            
@@ -706,7 +729,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == dorfID)
+                           if(curId == dorfId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -722,7 +745,8 @@ public class XMLAccess {
     
     //////// Lager
     //////////////////////////
-    public Lager GetLager(int lagerID)
+    @Override
+    public Lager getLager(int lagerId)
     {
         Lager curLager = new Lager(-1, -1, "");
          try {
@@ -743,7 +767,7 @@ public class XMLAccess {
                            Element eElement = (Element) nNode;
 
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == lagerID)
+                           if(pID == lagerId)
                            {
                                 curLager.setId(pID);
                                 curLager.setDorfId(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
@@ -758,7 +782,8 @@ public class XMLAccess {
        return curLager;
     }
     
-    public int GetLagerCount()
+    @Override
+    public int getLagerCount()
     {         
          try {
            
@@ -777,7 +802,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetLager(Lager curLager)
+    @Override
+    public void setLager(Lager curLager)
     {            
          try {
            
@@ -813,7 +839,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddLager(Lager newLager)
+    @Override
+    public int addLager(Lager newLager)
     {
          Integer pID = -1;
          try {
@@ -835,7 +862,7 @@ public class XMLAccess {
                         eElement.appendChild(entryLager);
                               
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getLagerCount();
                         entryLager.setAttribute("P_ID", pID.toString());
                        
                         Integer fkDorfID = newLager.getDorfId();
@@ -860,7 +887,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveLager(int lagerID)
+    @Override
+    public void remLager(int lagerId)
     {
         try {
            
@@ -878,7 +906,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == lagerID)
+                           if(curId == lagerId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -894,7 +922,8 @@ public class XMLAccess {
     
     //////// LagerBestand
     //////////////////////////
-    public LagerBestand GetLagerBestand(int lagerbestandID)
+    @Override
+    public LagerBestand getLagerBestand(int lagerbestandId)
     {
         LagerBestand curLagerBestand = new LagerBestand(-1, -1, -1, -1);
          try {
@@ -916,7 +945,7 @@ public class XMLAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == lagerbestandID)
+                           if(pID == lagerbestandId)
                            {
                                 curLagerBestand.setId(pID);
                                 curLagerBestand.setResId(Integer.parseInt(eElement.getElementsByTagName("FK_RES_ID").item(0).getTextContent()));
@@ -932,7 +961,8 @@ public class XMLAccess {
        return curLagerBestand;
     }
     
-    public int GetLagerBestandCount()
+    @Override
+    public int getLagerBestandCount()
     {         
          try {
            
@@ -951,7 +981,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetLagerBestand(LagerBestand curLagerBestand)
+    @Override
+    public void setLagerBestand(LagerBestand curLagerBestand)
     {
             
          try {
@@ -986,7 +1017,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddLagerBestand(LagerBestand newLagerBestand)
+    @Override
+    public int addLagerBestand(LagerBestand newLagerBestand)
     {
          Integer pID = -1;
          try {
@@ -1010,7 +1042,7 @@ public class XMLAccess {
         
                       
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getLagerBestandCount();
                         entryLagerBestand.setAttribute("P_ID", pID.toString());
                         
                         Integer resID = newLagerBestand.getResId();
@@ -1040,7 +1072,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveLagerBestand(int lagerbestandID)
+    @Override
+    public void remLagerBestand(int lagerbestandId)
     {
         try {
            
@@ -1074,7 +1107,8 @@ public class XMLAccess {
     
     //////// Mitglied
     //////////////////////////
-    public Mitglied GetMitglied(int mitgliedID)
+    @Override
+    public Mitglied getMitglied(int mitgliedId)
     {
         Mitglied curMitglied = new Mitglied(-1, -1, "");
          try {
@@ -1111,7 +1145,8 @@ public class XMLAccess {
        return curMitglied;
     }
     
-    public int GetMitgliedCount()
+    @Override
+    public int getMitgliedCount()
     {         
          try {
            
@@ -1130,7 +1165,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetMitglied(Mitglied curMitglied)
+    @Override
+    public void setMitglied(Mitglied curMitglied)
     {
             
          try {
@@ -1164,7 +1200,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddMitglied(Mitglied newMitglied)
+    @Override
+    public int addMitglied(Mitglied newMitglied)
     {
          Integer pID = -1;
          try {
@@ -1188,7 +1225,7 @@ public class XMLAccess {
         
                       
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getMitgliedCount();
                         entryMitglied.setAttribute("P_ID", pID.toString());
 
                         Integer dorfID = newMitglied.getDorfID();
@@ -1213,7 +1250,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveMitglied(int mitgliedID)
+    @Override
+    public void remMitglied(int mitgliedId)
     {
         try {
            
@@ -1231,7 +1269,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == mitgliedID)
+                           if(curId == mitgliedId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -1247,7 +1285,8 @@ public class XMLAccess {
     
     //////// Ressource
     //////////////////////////
-    public Ressource GetRessource(int ressourceID)
+    @Override
+    public Ressource getRessource(int ressourceId)
     {
         Ressource curRessource = new Ressource(-1, "", -1, -1);
          try {
@@ -1269,7 +1308,7 @@ public class XMLAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == ressourceID)
+                           if(pID == ressourceId)
                            {
                                 curRessource.setId(pID);
                                 curRessource.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
@@ -1285,7 +1324,8 @@ public class XMLAccess {
        return curRessource;
     }
     
-    public int GetRessourceCount()
+    @Override
+    public int getRessourceCount()
     {         
          try {
            
@@ -1304,7 +1344,8 @@ public class XMLAccess {
        return 0;
     }
     
-    public void SetRessource(Ressource curRessource)
+    @Override
+    public void setRessource(Ressource curRessource)
     {
             
          try {
@@ -1344,7 +1385,8 @@ public class XMLAccess {
        }
     }
     
-    public int AddRessource(Ressource newRessource)
+    @Override
+    public int addRessource(Ressource newRessource)
     {
          Integer pID = -1;
          try {
@@ -1368,7 +1410,7 @@ public class XMLAccess {
         
                       
                         // P_ID
-                        pID = GetBerufCount();
+                        pID = getRessourceCount();
                         entryRessource.setAttribute("P_ID", pID.toString());
 
                         
@@ -1401,7 +1443,8 @@ public class XMLAccess {
        return pID;
     }
     
-    public void RemoveRessource(int ressourceID)
+    @Override
+    public void remRessource(int ressourceId)
     {
         try {
            
@@ -1419,7 +1462,7 @@ public class XMLAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == ressourceID)
+                           if(curId == ressourceId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
