@@ -29,7 +29,7 @@ import de.oszimt.DreiSchichten.model.Ressource;
 // - Trigger in DB implementieren
 // - Verbindungsaufbau- bzw abbau - Methode
 
-public class DBAccess {
+public class DBAccess implements IAccess {
   private Connection m_Connection;
   private ResultSet m_ResultSet;
   private boolean m_bInitialized;
@@ -49,8 +49,8 @@ public class DBAccess {
   private PreparedStatement m_RemBerufstyp;
   
   // Dorf-Table
-  private PreparedStatement m_GetDörfer;
   private PreparedStatement m_GetDorf;
+  private PreparedStatement m_GetDörfer;
   private PreparedStatement m_GetDorfCount;
   private PreparedStatement m_SetDorf;
   private PreparedStatement m_AddDorf;
@@ -167,10 +167,10 @@ public class DBAccess {
         ////
 
         //// Dorf-Statements
-        m_GetDörfer = m_Connection
-                .prepareStatement("SELECT * FROM Dorf");
         m_GetDorf = m_Connection
-                .prepareStatement("SELECT P_ID, Name FROM Dorf WHERE P_ID = ?");
+                .prepareStatement("SELECT P_ID, Name FROM Dorf WHERE P_ID = ?");        
+        m_GetDörfer = m_Connection
+                .prepareStatement("SELECT * FROM Dorf");                    // Edit-Marker
         m_GetDorfCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Dorf");
         m_SetDorf = m_Connection
@@ -244,6 +244,7 @@ public class DBAccess {
     
   }
   
+  @Override
   public Beruf getBeruf(int berufId) 
   {
       Beruf curBeruf = new Beruf();
@@ -270,6 +271,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public int getBerufCount()
   {
       try 
@@ -283,6 +285,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setBeruf(Beruf curBeruf)
   {
       try 
@@ -298,6 +301,7 @@ public class DBAccess {
   
   // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
   // noch nicht wissen kann
+  @Override
   public int addBeruf(Beruf newBeruf)
   {
       try 
@@ -315,6 +319,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remBeruf(int berufId)
   {
       try 
@@ -327,7 +332,7 @@ public class DBAccess {
       }
   }
   
-  
+  @Override
   public Berufstyp getBerufstyp(int berufstypId)
   {
       Berufstyp curBerufstyp = new Berufstyp();
@@ -357,6 +362,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public int getBerufstypCount()
   {
       try {
@@ -369,6 +375,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setBerufstyp(Berufstyp curBerufstyp)
   {
       try {
@@ -391,6 +398,7 @@ public class DBAccess {
   
   // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
   // noch nicht wissen kann
+  @Override
   public int addBerufstyp(Berufstyp newBerufstyp)
   {
       try 
@@ -412,6 +420,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remBerufstyp(int berufstypId)
   {
       try 
@@ -425,12 +434,8 @@ public class DBAccess {
       }
   }
   
-  public Dorf[] getDörfer()
-  {
-      //todo m_GetDörfer
-  }
   
-  
+  @Override
   public Dorf getDorf(int dorfId)
   {
       Dorf curDorf = new Dorf();
@@ -455,6 +460,14 @@ public class DBAccess {
       }
   }
   
+  /*
+  @Override
+  public Dorf[] getDörfer()  // Edit-Marker
+  {
+      //todo m_GetDörfer
+  }*/
+  
+  @Override
   public int getDorfCount()
   {
       try {
@@ -467,6 +480,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setDorf(Dorf curDorf)
   {
       try {
@@ -484,6 +498,7 @@ public class DBAccess {
   
   // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
   // noch nicht wissen kann
+  @Override
   public int addDorf(Dorf newDorf)
   {
       try 
@@ -501,6 +516,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remDorf(int dorfId)
   {
       try 
@@ -515,6 +531,7 @@ public class DBAccess {
   }
 
   
+  @Override
   public Lager getLager(int lagerId)
   {
       Lager curLager = new Lager();
@@ -541,6 +558,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public int getLagerCount()
   {
       try {
@@ -553,6 +571,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setLager(Lager curLager)
   {
     try {
@@ -570,6 +589,7 @@ public class DBAccess {
   
   // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
   // noch nicht wissen kann
+  @Override
   public int addLager(Lager newLager)
   {
       try 
@@ -586,6 +606,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remLager(int lagerId)
   {
       try 
@@ -599,7 +620,8 @@ public class DBAccess {
       }
   }
   
- 
+  
+  @Override
   public LagerBestand getLagerBestand(int lagerbestandId)
   {
       LagerBestand curLagerBestand = new LagerBestand();
@@ -627,7 +649,8 @@ public class DBAccess {
           return curLagerBestand;
       }
   }
- 
+  
+  @Override
   public int getLagerBestandCount()
   {
       try {
@@ -641,6 +664,7 @@ public class DBAccess {
   }
   
   
+  @Override
   public void setLagerBestand(LagerBestand curLagerBestand)
   {
     try {
@@ -659,6 +683,7 @@ public class DBAccess {
   
   // gibt den primary_Key zurück, da man diesen vor dem Anlegen in der Datenbank,
   // noch nicht wissen kann
+  @Override
   public int addLagerBestand(LagerBestand newLagerBestand)
   {
       try 
@@ -676,6 +701,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remLagerBestand(int lagerbestandId)
   {
       try 
@@ -690,8 +716,7 @@ public class DBAccess {
   }
   
   
- 
-  
+  @Override
   public Mitglied getMitglied(int mitgliedId)
   {
       Mitglied curMitglied = new Mitglied();
@@ -718,6 +743,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public int getMitgliedCount()
   {
       try {
@@ -730,6 +756,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setMitglied(Mitglied curMitglied)
   {
       try {
@@ -745,7 +772,8 @@ public class DBAccess {
       }
   }
   
-    public int addMitglied(Mitglied newMitglied)
+  @Override
+  public int addMitglied(Mitglied newMitglied)
   {
       try 
       {
@@ -762,6 +790,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remMitglied(int mitgliedId)
   {
       try 
@@ -776,7 +805,7 @@ public class DBAccess {
   }
   
  
-  
+  @Override
   public Ressource getRessource(int ressourceId)
   {
       Ressource curRessource = new Ressource();
@@ -805,6 +834,7 @@ public class DBAccess {
       }
   }
  
+  @Override
   public int getRessourceCount()
   {
       try {
@@ -817,6 +847,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void setRessource(Ressource curRessource)
   {
       try {
@@ -833,6 +864,7 @@ public class DBAccess {
       }
   }
  
+  @Override
   public int addRessource(Ressource newRessource)
   {
       try 
@@ -851,6 +883,7 @@ public class DBAccess {
       }
   }
   
+  @Override
   public void remRessource(int ressourceId)
   {
       try 
