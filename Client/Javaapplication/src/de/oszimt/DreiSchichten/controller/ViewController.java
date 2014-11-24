@@ -1,6 +1,7 @@
 package de.oszimt.DreiSchichten.controller;
 
 import de.oszimt.DreiSchichten.view.Dorfliste;
+import de.oszimt.DreiSchichten.view.Lagerliste;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,17 +30,17 @@ public class ViewController {
         frame.add(aktuellesPanel);
         frame.setVisible(true);
         Dorfliste d = (Dorfliste)aktuellesPanel;
-        d.setDörfer(db.getDörfer());
+        d.setDörfer(db.getDorfliste());
     }
     
     public void changePanel(String value, int id){
         switch(value){
             case "Dörfer":
-                this.aktuellesPanel=new Dorfliste(db.getDörfer());
+                this.aktuellesPanel=new Dorfliste(db.getDorfliste());
                 frame.add(aktuellesPanel);
                 break;
             case "Lager":
-                this.aktuellesPanel=new Lager(db.getLager);
+                this.aktuellesPanel=new Lagerliste(db.getLagerliste(id));
                 frame.add(aktuellesPanel);
                 break;
             default:

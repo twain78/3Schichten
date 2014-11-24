@@ -460,12 +460,13 @@ public class DBAccess implements IAccess {
       }
   }
   
-  /*
+  
   @Override
-  public Dorf[] getDörfer()  // Edit-Marker
+  public Dorf[] getDorfliste()  // Edit-Marker
   {
+      return new Dorf[]{};
       //todo m_GetDörfer
-  }*/
+  }
   
   @Override
   public int getDorfCount()
@@ -896,5 +897,11 @@ public class DBAccess implements IAccess {
         
       }
   }
+
+    @Override
+    public Lager[] getLagerliste(int dorfId) {
+        //todo Methode implementieren
+        return new Lager[]{};
+    }
   
 }

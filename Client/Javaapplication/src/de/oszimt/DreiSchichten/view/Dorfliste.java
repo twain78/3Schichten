@@ -24,9 +24,14 @@ public class Dorfliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setDörfer(Dorf[] dörfer){
+    public Dorfliste(Dorf[] dorfliste){
+        this();
+        setDörfer(dorfliste);
+    }
+    
+    public void setDörfer(Dorf[] dorfliste){
         DefaultTableModel model = (DefaultTableModel)jtDorfliste.getModel();
-        for(final Dorf dorf : dörfer){
+        for(final Dorf dorf : dorfliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
 

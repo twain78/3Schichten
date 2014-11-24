@@ -1,25 +1,56 @@
 package de.oszimt.DreiSchichten.view;
 
-import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.controller.DBAccess;
 import de.oszimt.DreiSchichten.model.Lager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author b-kg104
+ * @author Konstantin Görlitz
  */
 public class Lagerliste extends javax.swing.JPanel {
 
     /**
-     * Creates new form Lager
+     * Creates new form Lagerliste
      */
     public Lagerliste() {
         initComponents();
     }
     
-    public Lagerliste(Lager[] lager){
+    public Lagerliste(Lager[] lagerliste){
+        this();
+        
+    }
+    
+    public void setDörfer(Lager[] lagerliste){
         DefaultTableModel model = (DefaultTableModel)jtLagerliste.getModel();
-        for(final Dorf dorf : lager){
+        for(final Lager lager : lagerliste){
+            JButton button1 = new JButton("B");
+            button1.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    öffneLager(lager.getId());
+                }
+            });
+            
+            JButton button2 = new JButton("L");
+            button2.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    löscheLager(lager.getId());
+                }
+            });
+            
+            Object[] row = {lager.getName(), new DBAccess().getRessourceCount() ,
+                button1, button2};
+            model.addRow(row);
+            
+        }
     }
 
     /**
@@ -32,14 +63,11 @@ public class Lagerliste extends javax.swing.JPanel {
     private void initComponents() {
 
         jlTitel = new javax.swing.JLabel();
-        jlDorfname = new javax.swing.JLabel();
         jbNeuesLager = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtLagerliste = new javax.swing.JTable();
 
         jlTitel.setText("Lager");
-
-        jlDorfname.setText(" ");
 
         jbNeuesLager.setText("Neues Lager");
 
@@ -48,7 +76,7 @@ public class Lagerliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Lager", "Gesamtinhalt", "Bearbeiten"
+                "Lager", "Inhalt", "Bearbeiten"
             }
         ) {
             Class[] types = new Class [] {
@@ -68,15 +96,13 @@ public class Lagerliste extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlDorfname)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jbNeuesLager))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlTitel)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 2, Short.MAX_VALUE)))
+                        .addComponent(jlTitel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -84,21 +110,29 @@ public class Lagerliste extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlTitel)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlDorfname)
-                    .addComponent(jbNeuesLager))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(jbNeuesLager)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void öffneLager(int id){
+        //openLagerView(id);
+    }
+    
+    private void öffneEinwohner(int id){
+        //openEinwohnerView(id);
+    }
+    
+    private void löscheLager(int id){
+        //deleteLager(id);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbNeuesLager;
-    private javax.swing.JLabel jlDorfname;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTable jtLagerliste;
     // End of variables declaration//GEN-END:variables

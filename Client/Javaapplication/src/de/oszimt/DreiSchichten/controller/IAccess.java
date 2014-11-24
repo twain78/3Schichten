@@ -37,7 +37,7 @@ public interface IAccess {
   
   
   public Dorf getDorf(int dorfId);
-  public Dorf[] getDörfer();                  
+  public Dorf[] getDorfliste();                  
   public int getDorfCount();
   public void setDorf(Dorf curDorf);
   public int addDorf(Dorf newDorf);
@@ -45,6 +45,7 @@ public interface IAccess {
 
   
   public Lager getLager(int lagerId);
+  public Lager[] getLagerliste(int dorfId);
   public int getLagerCount();
   public void setLager(Lager curLager);
   public int addLager(Lager newLager);
