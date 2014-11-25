@@ -10,9 +10,9 @@ import javax.swing.JPanel;
  * @author Konstantin Görlitz
  */
 public class ViewController {
-    JFrame frame;
-    DBAccess db;
-    JPanel aktuellesPanel;
+    private JFrame frame;
+    private IAccess db;
+    private JPanel aktuellesPanel;
     
     public ViewController(){
         super();
@@ -35,16 +35,24 @@ public class ViewController {
     
     public void changePanel(String value, int id){
         switch(value){
-            case "Dörfer":
+            case "Dorfliste":
                 this.aktuellesPanel=new Dorfliste(db.getDorfliste());
                 frame.add(aktuellesPanel);
                 break;
-            case "Lager":
+            case "Lagerliste":
                 this.aktuellesPanel=new Lagerliste(db.getLagerliste(id));
                 frame.add(aktuellesPanel);
                 break;
             default:
                 break;
         }
+    }
+    
+    public void deleteDorf(int id){
+        db.remDorf(id);
+    }
+    
+    public void deleteLager(int id){
+        db.remLager(id);
     }
 }

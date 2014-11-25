@@ -1,6 +1,7 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.DBAccess;
+import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Lager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Konstantin Görlitz
  */
 public class Lagerliste extends javax.swing.JPanel {
+    private ViewController viewcontroller;
 
     /**
      * Creates new form Lagerliste
@@ -51,6 +53,11 @@ public class Lagerliste extends javax.swing.JPanel {
             model.addRow(row);
             
         }
+    }
+    
+    public Lagerliste(Lager[] lagerliste, ViewController vc){
+        this(lagerliste);
+        this.viewcontroller=vc;
     }
 
     /**
@@ -119,15 +126,11 @@ public class Lagerliste extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void öffneLager(int id){
-        //openLagerView(id);
-    }
-    
-    private void öffneEinwohner(int id){
-        //openEinwohnerView(id);
+        this.viewcontroller.changePanel("Lagerliste", id);
     }
     
     private void löscheLager(int id){
-        //deleteLager(id);
+        this.viewcontroller.deleteLager(id);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

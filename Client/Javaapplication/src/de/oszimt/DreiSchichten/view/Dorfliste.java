@@ -5,6 +5,7 @@
  */
 package de.oszimt.DreiSchichten.view;
 
+import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Dorf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Konstantin Görlitz
  */
 public class Dorfliste extends javax.swing.JPanel {
+    
+    private ViewController viewcontroller;
 
     /**
      * Creates new form Dörfer
@@ -66,8 +69,13 @@ public class Dorfliste extends javax.swing.JPanel {
         }
     }
     
+    public Dorfliste(Dorf[] dorfliste, ViewController vc){
+        this(dorfliste);
+        this.viewcontroller=vc;
+    }
+    
     private void öffneDorf(int id){
-        //openDorfView(id);
+        viewcontroller.changePanel("Lagerliste", id);
     }
     
     private void öffneEinwohner(int id){
@@ -75,7 +83,7 @@ public class Dorfliste extends javax.swing.JPanel {
     }
     
     private void löscheDorf(int id){
-        //deleteDorf(id);
+        this.viewcontroller.deleteDorf(id);
     }
 
     /**
