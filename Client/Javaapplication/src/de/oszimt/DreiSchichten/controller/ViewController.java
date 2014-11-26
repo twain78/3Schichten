@@ -1,5 +1,7 @@
 package de.oszimt.DreiSchichten.controller;
 
+import de.oszimt.DreiSchichten.model.Beruf;
+import de.oszimt.DreiSchichten.model.Ressource;
 import de.oszimt.DreiSchichten.view.Dorfliste;
 import de.oszimt.DreiSchichten.view.Lagerliste;
 import javax.swing.JFrame;
@@ -54,5 +56,36 @@ public class ViewController {
     
     public void deleteLager(int id){
         db.remLager(id);
+    }
+    
+    public void deleteMitglied(int id){
+        db.remMitglied(id);
+    }
+    
+    public void deleteLagerbestand(int id){
+        db.remLagerBestand(id);
+    }
+    
+    public String[] getBerufname(int[] ids){
+        String[] berufe = new String[ids.length];
+        int i = 0;
+        for(int id: ids){
+            Beruf beruf = (Beruf)db.getBeruf(id);
+            berufe[i]=db.getBerufstyp(beruf.getTypID()).getName();
+            i++;
+        }
+        return berufe;
+    }
+    
+    public String getRessourceName(int id){
+        return db.getRessource(id).getName();
+    }
+    
+    public Ressource[] getRessourcen(){
+        return db.getRessourcen();
+    }
+    
+    public void updateLagerbestand(int id, String ressourcename, int menge){
+        db.updateLagerbestand(id, ressourcename, menge);
     }
 }

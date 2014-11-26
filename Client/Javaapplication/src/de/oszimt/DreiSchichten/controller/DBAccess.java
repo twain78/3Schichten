@@ -127,7 +127,7 @@ public class DBAccess implements IAccess {
       Class.forName("org.sqlite.JDBC");
       
       // Verbindung zur Datenbank aufbauen -- entsprechend anpassen
-      m_Connection = DriverManager.getConnection("jdbc:sqlite:D:/lif_DB.db");  
+      m_Connection = DriverManager.getConnection("jdbc:sqlite:lif_DB.db");  
     } catch (Exception e) {
       m_bInitialized = false;
     }
@@ -902,6 +902,17 @@ public class DBAccess implements IAccess {
     public Lager[] getLagerliste(int dorfId) {
         //todo Methode implementieren
         return new Lager[]{};
+    }
+
+    @Override
+    public Ressource[] getRessourcen() {
+        //todo Methode Implementieren, holt alle Ressourcen aus der Datenbank
+        return null;
+    }
+
+    @Override
+    public void updateLagerbestand(int id, String ressourcename, int menge) {
+        //todo die Methode soll einen bestehenden Lagerbestand anhand der LAGERID ändern
     }
   
 }

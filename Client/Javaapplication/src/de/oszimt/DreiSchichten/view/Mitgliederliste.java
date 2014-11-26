@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
-import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.Mitglied;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -16,74 +11,54 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Konstantin Görlitz
  */
-public class Dorfliste extends javax.swing.JPanel {
+public class Mitgliederliste extends javax.swing.JPanel {
     
     private ViewController viewcontroller;
 
     /**
-     * Creates new form Dörfer
+     * Creates new form Mitgliederliste
      */
-    public Dorfliste() {
+    public Mitgliederliste() {
         initComponents();
     }
     
-    public Dorfliste(Dorf[] dorfliste){
+    public Mitgliederliste(Mitglied[] mitgliederliste){
         this();
-        setDörfer(dorfliste);
+        setMitglieder(mitgliederliste);
     }
     
-    public void setDörfer(Dorf[] dorfliste){
-        DefaultTableModel model = (DefaultTableModel)jtDorfliste.getModel();
-        for(final Dorf dorf : dorfliste){
+    public void setMitglieder(Mitglied[] mitgliederliste){
+        DefaultTableModel model = (DefaultTableModel)jtMitgliederliste.getModel();
+        for(final Mitglied mitglied : mitgliederliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneDorf(dorf.getId());
+                    öffneMitglied(mitglied.getId());
                 }
             });
             
-            JButton button2 = new JButton("P");
+            JButton button2 = new JButton("L");
             button2.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneEinwohner(dorf.getId());
+                    löscheMitglied(mitglied.getId());
                 }
             });
             
-            JButton button3 = new JButton("L");
-            button3.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    löscheDorf(dorf.getId());
-                }
-            });
             
-            Object[] row = {dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
-                button1, button2, button3};
+            
+            Object[] row = {mitglied.getName(), viewcontroller.getBerufname(mitglied.getBerufIDs()).toString(), 
+                button1, button2};
             model.addRow(row);
             
         }
     }
     
-    public Dorfliste(Dorf[] dorfliste, ViewController vc){
-        this(dorfliste);
+    public Mitgliederliste(Mitglied[] mitgliederliste, ViewController vc){
+        this(mitgliederliste);
         this.viewcontroller=vc;
-    }
-    
-    private void öffneDorf(int id){
-        viewcontroller.changePanel("Lagerliste", id);
-    }
-    
-    private void öffneEinwohner(int id){
-        //openEinwohnerView(id);
-    }
-    
-    private void löscheDorf(int id){
-        this.viewcontroller.deleteDorf(id);
     }
 
     /**
@@ -96,36 +71,36 @@ public class Dorfliste extends javax.swing.JPanel {
     private void initComponents() {
 
         jlTitel = new javax.swing.JLabel();
-        jbNeuesDorf = new javax.swing.JButton();
+        jbNeuesMitglied = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtDorfliste = new javax.swing.JTable();
+        jtMitgliederliste = new javax.swing.JTable();
 
-        jlTitel.setText("Dorfliste");
+        jlTitel.setText("Mitliederliste");
 
-        jbNeuesDorf.setText("Neues Dorf");
-        jbNeuesDorf.addActionListener(new java.awt.event.ActionListener() {
+        jbNeuesMitglied.setText("Neues Mitglied");
+        jbNeuesMitglied.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbNeuesDorfActionPerformed(evt);
+                jbNeuesMitgliedActionPerformed(evt);
             }
         });
 
-        jtDorfliste.setModel(new javax.swing.table.DefaultTableModel(
+        jtMitgliederliste.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
+                "Name", "Beruf", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jtDorfliste);
+        jScrollPane1.setViewportView(jtMitgliederliste);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -137,9 +112,11 @@ public class Dorfliste extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlTitel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbNeuesDorf))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jbNeuesMitglied))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,22 +124,29 @@ public class Dorfliste extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlTitel)
-                    .addComponent(jbNeuesDorf))
+                    .addComponent(jbNeuesMitglied))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbNeuesDorfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesDorfActionPerformed
-        viewcontroller.changePanel("NeuesDorf", 0);
-    }//GEN-LAST:event_jbNeuesDorfActionPerformed
+    private void jbNeuesMitgliedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesMitgliedActionPerformed
+        viewcontroller.changePanel("NeuesMitglied", 0);
+    }//GEN-LAST:event_jbNeuesMitgliedActionPerformed
 
+    private void öffneMitglied(int id){
+        this.viewcontroller.changePanel("NeuesMitglied", id);
+    }
+    
+    private void löscheMitglied(int id){
+        this.viewcontroller.deleteMitglied(id);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbNeuesDorf;
+    private javax.swing.JButton jbNeuesMitglied;
     private javax.swing.JLabel jlTitel;
-    private javax.swing.JTable jtDorfliste;
+    private javax.swing.JTable jtMitgliederliste;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,7 +24,7 @@ public class Lagerliste extends javax.swing.JPanel {
     
     public Lagerliste(Lager[] lagerliste){
         this();
-        
+        setDörfer(lagerliste);
     }
     
     public void setDörfer(Lager[] lagerliste){
@@ -74,20 +74,25 @@ public class Lagerliste extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtLagerliste = new javax.swing.JTable();
 
-        jlTitel.setText("Lager");
+        jlTitel.setText("Lagerliste");
 
         jbNeuesLager.setText("Neues Lager");
+        jbNeuesLager.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNeuesLagerActionPerformed(evt);
+            }
+        });
 
         jtLagerliste.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Lager", "Inhalt", "Bearbeiten"
+                "Lager", "Inhalt", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -103,27 +108,29 @@ public class Lagerliste extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbNeuesLager))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlTitel)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbNeuesLager))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jlTitel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitel)
+                    .addComponent(jbNeuesLager))
                 .addGap(18, 18, 18)
-                .addComponent(jbNeuesLager)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbNeuesLagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesLagerActionPerformed
+        viewcontroller.changePanel("NeuesLager", 0);
+    }//GEN-LAST:event_jbNeuesLagerActionPerformed
 
     private void öffneLager(int id){
         this.viewcontroller.changePanel("Lagerliste", id);

@@ -65,4 +65,9 @@ public class Ressource {
     public void setPreis(int preis) {
         this.preis = preis;
     }
+    
+    @Override
+    public String toString(){
+        return getName();
+    }
 }

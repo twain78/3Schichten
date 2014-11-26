@@ -54,6 +54,7 @@ public interface IAccess {
  
   public LagerBestand getLagerBestand(int lagerbestandId);
   public int getLagerBestandCount();
+  public void updateLagerbestand(int id, String ressourcename, int menge);
   public void setLagerBestand(LagerBestand curLagerBestand);
   public int addLagerBestand(LagerBestand newLagerBestand);
   public void remLagerBestand(int lagerbestandId);
@@ -67,6 +68,7 @@ public interface IAccess {
 
 
   public Ressource getRessource(int ressourceId);
+  public Ressource[] getRessourcen();
   public int getRessourceCount();
   public void setRessource(Ressource curRessource);
   public int addRessource(Ressource newRessource);
