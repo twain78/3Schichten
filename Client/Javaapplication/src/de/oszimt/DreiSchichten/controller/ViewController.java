@@ -1,6 +1,10 @@
 package de.oszimt.DreiSchichten.controller;
 
 import de.oszimt.DreiSchichten.model.Beruf;
+import de.oszimt.DreiSchichten.model.Berufstyp;
+import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.LagerBestand;
+import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
 import de.oszimt.DreiSchichten.view.Dorfliste;
 import de.oszimt.DreiSchichten.view.Lagerliste;
@@ -15,6 +19,7 @@ public class ViewController {
     private JFrame frame;
     private IAccess db;
     private JPanel aktuellesPanel;
+    private Bucket bucket;
     
     public ViewController(){
         super();
@@ -24,6 +29,7 @@ public class ViewController {
         this();
         this.frame = frame;
         this.db = db;
+        this.bucket = new Bucket();
         init();
     }
     
@@ -66,7 +72,11 @@ public class ViewController {
         db.remLagerBestand(id);
     }
     
-    public String[] getBerufname(int[] ids){
+    public void deleteBeruf(int id){
+        db.remBeruf(id);
+    }
+    
+    public String[] getBerufnamen(int[] ids){
         String[] berufe = new String[ids.length];
         int i = 0;
         for(int id: ids){
@@ -85,7 +95,43 @@ public class ViewController {
         return db.getRessourcen();
     }
     
+    public Berufstyp[] getBerufstypen(){
+        return db.getBerufstypen();
+    }
+    
     public void updateLagerbestand(int id, String ressourcename, int menge){
         db.updateLagerbestand(id, ressourcename, menge);
+    }
+    
+    public void updateBeruf(int id, String berufsname, int punkte){
+        db.updateBeruf(id, berufsname, punkte);
+    }
+    
+    public LagerBestand[] getLagerbestand(int lagerid){
+        return db.getLagerBestände(lagerid);
+    }
+    
+    public String getBerufName(int id){
+        return db.getBerufstyp(id).getName();
+    }
+    
+    public Beruf[] getBerufe(int mitgliedid){
+        return db.getBerufe(mitgliedid);
+    }
+    
+    public void setBucketDorf(int id){
+        bucket.setDorf(db.getDorf(id));
+    }
+    
+    public Dorf getBucketDorf(){
+        return bucket.getDorf();
+    }
+    
+    public void addDorf(String dorfname){
+        db.addDorf(new Dorf(0, dorfname));
+    }
+    
+    public void addMitglied(String mitgliedsname){
+        db.addMitglied(new Mitglied(0, bucket.getDorf().getId(), mitgliedsname));
     }
 }

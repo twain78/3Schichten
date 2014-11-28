@@ -49,7 +49,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
             
             
             
-            Object[] row = {mitglied.getName(), viewcontroller.getBerufname(mitglied.getBerufIDs()).toString(), 
+            Object[] row = {mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
                 button1, button2};
             model.addRow(row);
             

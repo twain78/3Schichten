@@ -1,6 +1,8 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
+import de.oszimt.DreiSchichten.model.Beruf;
+import de.oszimt.DreiSchichten.model.Berufstyp;
 import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Ressource;
 import java.awt.event.ActionEvent;
@@ -12,53 +14,53 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Konstantin Görlitz
  */
-public class Lagerinhalt extends javax.swing.JPanel {
+public class Berufsliste extends javax.swing.JPanel {
 
     private ViewController viewcontroller;
-    private int lagerid;
+    private int mitgliedid;
     
     /**
-     * Creates new form Lagerinhalt
+     * Creates new form Berufsliste
      */
-    public Lagerinhalt() {
+    public Berufsliste() {
         initComponents();
         fillCombobox();
     }
     
     private void fillCombobox(){
-        for(Ressource ressource : viewcontroller.getRessourcen()){
-            jcResource.addItem(ressource);
+        for(Berufstyp berufstyp : viewcontroller.getBerufstypen()){
+            jcBeruf.addItem(berufstyp);
         }
     }
     
-    public Lagerinhalt(LagerBestand[] lagerbestände){
+    public Berufsliste(Beruf[] berufe){
         this();
-        setInhalte(lagerbestände);
-        this.lagerid=lagerbestände[0].getId();
+        setInhalte(berufe);
+        this.mitgliedid=berufe[0].getMitgliedID();
     }
     
-    public void setInhalte(LagerBestand[] lagerbestände){
-        DefaultTableModel model = (DefaultTableModel)jtLagerinhalt.getModel();
+    public void setInhalte(Beruf[] berufe){
+        DefaultTableModel model = (DefaultTableModel)jtBerufliste.getModel();
         model.setRowCount(0);
-        for(final LagerBestand lagerbestand : lagerbestände){
+        for(final Beruf beruf : berufe){
             JButton button1 = new JButton("L");
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    löscheLagerbestand(lagerbestand.getId());
+                    löscheBeruf(beruf.getId());
                 }
             });
             
             
-            Object[] row = {viewcontroller.getRessourceName(lagerbestand.getId()), lagerbestand.getMenge(),
+            Object[] row = {viewcontroller.getBerufName(beruf.getTypID()), beruf.getPunkte(),
                 button1};
             model.addRow(row);
             
         }
     }
     
-    public Lagerinhalt(LagerBestand[] lagerbestände, ViewController vc){
-        this(lagerbestände);
+    public Berufsliste(Beruf[] berufe, ViewController vc){
+        this(berufe);
         this.viewcontroller=vc;
     }
 
@@ -72,24 +74,24 @@ public class Lagerinhalt extends javax.swing.JPanel {
     private void initComponents() {
 
         jlTitel = new javax.swing.JLabel();
-        jlResource = new javax.swing.JLabel();
-        jcResource = new javax.swing.JComboBox();
-        jlMenge = new javax.swing.JLabel();
-        jtMenge = new javax.swing.JTextField();
+        jlBeruf = new javax.swing.JLabel();
+        jcBeruf = new javax.swing.JComboBox();
+        jlPunkte = new javax.swing.JLabel();
+        jtPunkte = new javax.swing.JTextField();
         jbAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtLagerinhalt = new javax.swing.JTable();
+        jtBerufliste = new javax.swing.JTable();
 
-        jlTitel.setText("Lagerinhalt");
+        jlTitel.setText("Berufsliste");
 
-        jlResource.setText("Resource");
+        jlBeruf.setText("Beruf");
 
-        jlMenge.setText("Menge");
+        jlPunkte.setText("Punkte");
 
-        jtMenge.setToolTipText("");
-        jtMenge.addActionListener(new java.awt.event.ActionListener() {
+        jtPunkte.setToolTipText("");
+        jtPunkte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtMengeActionPerformed(evt);
+                jtPunkteActionPerformed(evt);
             }
         });
 
@@ -100,12 +102,12 @@ public class Lagerinhalt extends javax.swing.JPanel {
             }
         });
 
-        jtLagerinhalt.setModel(new javax.swing.table.DefaultTableModel(
+        jtBerufliste.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Resource", "Menge", "Löschen"
+                "Beruf", "Punkte", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
@@ -116,7 +118,7 @@ public class Lagerinhalt extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jtLagerinhalt);
+        jScrollPane1.setViewportView(jtBerufliste);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -128,15 +130,15 @@ public class Lagerinhalt extends javax.swing.JPanel {
                     .addComponent(jlTitel)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlResource)
-                            .addComponent(jcResource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jlBeruf)
+                            .addComponent(jcBeruf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jtMenge, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtPunkte, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jbAdd))
-                            .addComponent(jlMenge)))
+                            .addComponent(jlPunkte)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -147,42 +149,42 @@ public class Lagerinhalt extends javax.swing.JPanel {
                 .addComponent(jlTitel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlResource)
-                    .addComponent(jlMenge))
+                    .addComponent(jlBeruf)
+                    .addComponent(jlPunkte))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcResource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbAdd)
-                    .addComponent(jtMenge))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtPunkte, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jcBeruf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbAdd)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void löscheLagerbestand(int id){
-        viewcontroller.deleteLagerbestand(id);
-        jtLagerinhalt.remove(jtLagerinhalt.getSelectedRow());
+    private void löscheBeruf(int id){
+        viewcontroller.deleteBeruf(id);
+        jtBerufliste.remove(jtBerufliste.getSelectedRow());
     }
     
-    private void jtMengeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtMengeActionPerformed
+    private void jtPunkteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtPunkteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtMengeActionPerformed
+    }//GEN-LAST:event_jtPunkteActionPerformed
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
         boolean temp=true;
-        Ressource selectedRessource = (Ressource)jcResource.getSelectedItem();
-        for(int i=0; i<jtLagerinhalt.getRowCount(); i++){
-            if(selectedRessource.getName().equals(jtLagerinhalt.getModel().getValueAt(0, i))){
-                jtLagerinhalt.getModel().setValueAt((Integer.parseInt(jtLagerinhalt.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtMenge.getText())), i, 1);
+        Berufstyp selectedBeruf = (Berufstyp)jcBeruf.getSelectedItem();
+        for(int i=0; i<jtBerufliste.getRowCount(); i++){
+            if(selectedBeruf.getName().equals(jtBerufliste.getModel().getValueAt(0, i))){
+                jtBerufliste.getModel().setValueAt((Integer.parseInt(jtBerufliste.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtPunkte.getText())), i, 1);
                 temp=false;
-                viewcontroller.updateLagerbestand(this.lagerid, jtLagerinhalt.getModel().getValueAt(0, i).toString(), Integer.parseInt(jtLagerinhalt.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtMenge.getText()));
+                viewcontroller.updateBeruf(this.mitgliedid, jtBerufliste.getModel().getValueAt(0, i).toString(), Integer.parseInt(jtBerufliste.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtPunkte.getText()));
             }
             
         }
         if(temp){
-            DefaultTableModel model = (DefaultTableModel)jtLagerinhalt.getModel();
-            setInhalte(viewcontroller.getLagerbestand(lagerid));
+            setInhalte(viewcontroller.getBerufe(mitgliedid));
         }
     }//GEN-LAST:event_jbAddActionPerformed
 
@@ -190,11 +192,11 @@ public class Lagerinhalt extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAdd;
-    private javax.swing.JComboBox jcResource;
-    private javax.swing.JLabel jlMenge;
-    private javax.swing.JLabel jlResource;
+    private javax.swing.JComboBox jcBeruf;
+    private javax.swing.JLabel jlBeruf;
+    private javax.swing.JLabel jlPunkte;
     private javax.swing.JLabel jlTitel;
-    private javax.swing.JTable jtLagerinhalt;
-    private javax.swing.JTextField jtMenge;
+    private javax.swing.JTable jtBerufliste;
+    private javax.swing.JTextField jtPunkte;
     // End of variables declaration//GEN-END:variables
 }

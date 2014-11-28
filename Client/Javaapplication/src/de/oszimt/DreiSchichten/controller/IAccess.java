@@ -24,13 +24,16 @@ public interface IAccess {
    
   public Beruf getBeruf(int berufId);
   public int getBerufCount();
+  public Beruf[] getBerufe(int mitgliedId);
   public void setBeruf(Beruf curBeruf);
   public int addBeruf(Beruf newBeruf);
+  public void updateBeruf(int id, String berufsname, int punkte);
   public void remBeruf(int berufId);
 
   
   public Berufstyp getBerufstyp(int berufstypId);
   public int getBerufstypCount();
+  public Berufstyp[] getBerufstypen();
   public void setBerufstyp(Berufstyp curBerufstyp);
   public int addBerufstyp(Berufstyp newBerufstyp);
   public void remBerufstyp(int berufstypId);
@@ -54,6 +57,7 @@ public interface IAccess {
  
   public LagerBestand getLagerBestand(int lagerbestandId);
   public int getLagerBestandCount();
+  public LagerBestand[] getLagerBestände(int lagerId);
   public void updateLagerbestand(int id, String ressourcename, int menge);
   public void setLagerBestand(LagerBestand curLagerBestand);
   public int addLagerBestand(LagerBestand newLagerBestand);

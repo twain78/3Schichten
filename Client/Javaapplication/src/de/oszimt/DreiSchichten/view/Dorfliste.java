@@ -62,7 +62,7 @@ public class Dorfliste extends javax.swing.JPanel {
                 }
             });
             
-            Object[] row = {dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
+            Object[] row = {dorf.getId(), dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
                 button1, button2, button3};
             model.addRow(row);
             
@@ -114,15 +114,20 @@ public class Dorfliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
+                "ID", "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jtDorfliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtDorflisteMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jtDorfliste);
@@ -157,6 +162,10 @@ public class Dorfliste extends javax.swing.JPanel {
     private void jbNeuesDorfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesDorfActionPerformed
         viewcontroller.changePanel("NeuesDorf", 0);
     }//GEN-LAST:event_jbNeuesDorfActionPerformed
+
+    private void jtDorflisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDorflisteMouseClicked
+        jtDorfliste.getValueAt(jtDorfliste.getSelectedRow(), 1);
+    }//GEN-LAST:event_jtDorflisteMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
