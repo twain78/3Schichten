@@ -5,6 +5,7 @@
  */
 package de.oszimt.DreiSchichten.controller;
 
+import java.util.List;
 
 // Model-Imports
 import de.oszimt.DreiSchichten.model.Beruf;
@@ -23,24 +24,23 @@ import de.oszimt.DreiSchichten.model.Ressource;
 public interface IAccess {
    
   public Beruf getBeruf(int berufId);
-  public int getBerufCount();
-  public Beruf[] getBerufe(int mitgliedId);
+  public List<Beruf> getBerufe (int mitgliedId);
+  public int getBerufCount();  
   public void setBeruf(Beruf curBeruf);
-  public int addBeruf(Beruf newBeruf);
-  public void updateBeruf(int id, String berufsname, int punkte);
+  public int addBeruf(Beruf newBeruf); 
   public void remBeruf(int berufId);
 
   
   public Berufstyp getBerufstyp(int berufstypId);
-  public int getBerufstypCount();
-  public Berufstyp[] getBerufstypen();
+  public List<Berufstyp> getBerufstypen();
+  public int getBerufstypCount();  
   public void setBerufstyp(Berufstyp curBerufstyp);
   public int addBerufstyp(Berufstyp newBerufstyp);
   public void remBerufstyp(int berufstypId);
   
   
   public Dorf getDorf(int dorfId);
-  public Dorf[] getDorfliste();                  
+  public List<Dorf> getDorfliste();                  
   public int getDorfCount();
   public void setDorf(Dorf curDorf);
   public int addDorf(Dorf newDorf);
@@ -48,7 +48,7 @@ public interface IAccess {
 
   
   public Lager getLager(int lagerId);
-  public Lager[] getLagerliste(int dorfId);
+  public List<Lager> getLagerListe(int dorfId);
   public int getLagerCount();
   public void setLager(Lager curLager);
   public int addLager(Lager newLager);
@@ -56,15 +56,15 @@ public interface IAccess {
 
  
   public LagerBestand getLagerBestand(int lagerbestandId);
-  public int getLagerBestandCount();
-  public LagerBestand[] getLagerBestände(int lagerId);
-  public void updateLagerbestand(int id, String ressourcename, int menge);
+  public List<LagerBestand> getLagerBestaende(int lagerId);
+  public int getLagerBestandCount();  
   public void setLagerBestand(LagerBestand curLagerBestand);
   public int addLagerBestand(LagerBestand newLagerBestand);
   public void remLagerBestand(int lagerbestandId);
 
   
   public Mitglied getMitglied(int mitgliedId);
+  public List<Mitglied> getMitglieder();
   public int getMitgliedCount();
   public void setMitglied(Mitglied curMitglied);
   public int addMitglied(Mitglied newMitglied);
@@ -72,7 +72,7 @@ public interface IAccess {
 
 
   public Ressource getRessource(int ressourceId);
-  public Ressource[] getRessourcen();
+  public List<Ressource> getRessourcen();
   public int getRessourceCount();
   public void setRessource(Ressource curRessource);
   public int addRessource(Ressource newRessource);
