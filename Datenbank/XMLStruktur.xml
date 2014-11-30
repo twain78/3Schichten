@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<tableDorf>
+	<entryDorf P_ID="1">
+		<Name>Test</Name>
+	</entryDorf>
+</tableDorf>
+
+<tableMitglied>
+	<entryMitglied P_ID="1">
+		<FK_DORF_ID>1</FK_DORF_ID>
+		<Name>Test</Name>
+	</entryMitglied>
+</tableMitglied>
+
+<tableLager>
+	<entryLager P_ID="1">
+		<FK_DORF_ID>1</FK_DORF_ID>
+		<Name>Test</Name>
+	</entryLager>
+</tableLager>
+
+<tableBerufstyp>
+	<entryBerufstyp P_ID="1">
+		<Name>Test</Name>
+		<SK1>100</SK1>
+		<SK2>100</SK2>
+		<SK3>100</SK3>
+		<SK4>100</SK4>
+		<SK5>100</SK5>
+	</entryBerufstyp>
+</tableBerufstyp>
+
+<tableRessource>
+	<entryRessource P_ID="1">
+		<Name>Test</Name>
+		<Gewicht>1.1</Gewicht>
+		<Preis>1.1</Preis>
+	</entryRessource>
+</tableRessource>
+
+<tableBeruf>
+	<entryBeruf P_ID="1">
+		<FK_TYP_ID>1</FK_TYP_ID>
+		<FK_Mitglied_ID>1</FK_Mitglied_ID>
+		<Punkte>100</Punkte>
+	</entryBeruf>
+</tableBeruf>
+
+<tableLagerBestand>
+	<entryLagerBestand P_ID="1">
+		<FK_Res_ID>Test</FK_Res_ID>
+		<FK_Lager_ID>Test</FK_Lager_ID>
+		<Menge>100</Menge>
+	</entryLagerBestand>
+</tableLagerBestand>
