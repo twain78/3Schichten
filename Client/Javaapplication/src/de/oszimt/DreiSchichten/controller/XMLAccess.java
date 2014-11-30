@@ -1742,5 +1742,17 @@ public class XMLAccess implements IAccess {
        }                       
     }
     //////////////////////////
+
+    @Override
+    public Dorf[] getDorfliste() {
+        //todo
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Lager[] getLagerliste(int dorfId) {
+        //todo
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
