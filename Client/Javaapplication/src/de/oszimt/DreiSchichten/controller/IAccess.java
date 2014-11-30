@@ -40,7 +40,7 @@ public interface IAccess {
   
   
   public Dorf getDorf(int dorfId);
-  public List<Dorf> getDorfliste();                  
+  public List<Dorf> getDorfListe();                  
   public int getDorfCount();
   public void setDorf(Dorf curDorf);
   public int addDorf(Dorf newDorf);

@@ -533,7 +533,7 @@ public class DBAccess implements IAccess {
   
   
   @Override
-  public List<Dorf> getDorfliste()
+  public List<Dorf> getDorfListe()
   {       
       List<Dorf> DorfList = new ArrayList<Dorf>();
       try {

@@ -1,5 +1,8 @@
 package de.oszimt.DreiSchichten.controller;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +29,7 @@ import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
+import java.util.List;
 
 
 /**
@@ -197,6 +201,48 @@ public class XMLAccess implements IAccess {
        }         
        
        return curBeruf;
+    }
+    
+    @Override
+    public List<Beruf> getBerufe (int mitgliedId)
+    {
+         List<Beruf> BerufList = new ArrayList<Beruf>();                
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryBeruf";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                           Element eElement = (Element) nNode;
+                           
+                           
+                           Integer FkMitgliedID = Integer.parseInt(eElement.getAttribute("FK_Mitglied_ID"));
+                           if(FkMitgliedID == mitgliedId)
+                           {
+                                Beruf curBeruf = new Beruf();
+                                curBeruf.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                                curBeruf.setTypID(Integer.parseInt(eElement.getElementsByTagName("FK_TYP_ID").item(0).getTextContent()));
+                                curBeruf.setMitgliedID(FkMitgliedID);
+                                curBeruf.setPunkte(Integer.parseInt(eElement.getElementsByTagName("Punkte").item(0).getTextContent()));
+                                
+                                BerufList.add(curBeruf);
+                           }
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return BerufList;
     }
     
     @Override
@@ -390,6 +436,46 @@ public class XMLAccess implements IAccess {
        }         
        
        return curBerufstyp;
+    }
+    
+    @Override
+    public List<Berufstyp> getBerufstypen()
+    {
+        List<Berufstyp> BerufstypenListe = new ArrayList<Berufstyp>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryBerufstyp";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+
+                        Berufstyp curBerufstyp = new Berufstyp();
+                        curBerufstyp.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                        curBerufstyp.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
+                        curBerufstyp.setSk1(Integer.parseInt(eElement.getElementsByTagName("SK1").item(0).getTextContent()));
+                        curBerufstyp.setSk2(Integer.parseInt(eElement.getElementsByTagName("SK2").item(0).getTextContent()));
+                        curBerufstyp.setSk3(Integer.parseInt(eElement.getElementsByTagName("SK3").item(0).getTextContent()));
+                        curBerufstyp.setSk4(Integer.parseInt(eElement.getElementsByTagName("SK4").item(0).getTextContent()));
+                        curBerufstyp.setSk5(Integer.parseInt(eElement.getElementsByTagName("SK5").item(0).getTextContent()));         
+                        
+                        BerufstypenListe.add(curBerufstyp);
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return BerufstypenListe;
     }
     
     @Override
@@ -604,14 +690,41 @@ public class XMLAccess implements IAccess {
        return curDorf;
     }
     
-    /*
-    @Override
-    public Dorf[] getDörfer()       -- Edit-Marker
-    {
-        
-    }
-    */
+   @Override
+   public List<Dorf> getDorfListe()
+   {
+        List<Dorf> DorfList = new ArrayList<Dorf>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
     
+           String tableName = "entryDorf";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+
+                        Dorf curDorf = new Dorf();
+                        curDorf.setId(Integer.parseInt(eElement.getAttribute("P_ID")));
+                        curDorf.setName(eElement.getElementsByTagName("FK_TYP_ID").item(0).getTextContent());                                                   
+                        
+                        DorfList.add(curDorf);
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return DorfList;
+   }
+   
     @Override
     public int getDorfCount()
     {         
@@ -780,6 +893,46 @@ public class XMLAccess implements IAccess {
        }         
        
        return curLager;
+    }
+    
+    @Override
+    public List<Lager> getLagerListe(int dorfId)
+    {
+         List<Lager> LagerList = new ArrayList<Lager>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryLager";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                           Element eElement = (Element) nNode;
+
+                           Integer FkDorfId = Integer.parseInt(eElement.getAttribute("FK_DORF_ID"));
+                           if(FkDorfId == dorfId)
+                           {
+                                Lager curLager = new Lager();
+                                curLager.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                                curLager.setDorfId(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
+                                curLager.setName(eElement.getElementsByTagName("Name").item(0).getTextContent()); 
+                                
+                                LagerList.add(curLager);
+                           }
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return LagerList;
     }
     
     @Override
@@ -962,6 +1115,48 @@ public class XMLAccess implements IAccess {
     }
     
     @Override
+    public List<LagerBestand> getLagerBestaende(int lagerId)
+    {
+         List<LagerBestand> LagerBestandList = new ArrayList<LagerBestand>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryLagerBestand";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                           Element eElement = (Element) nNode;
+                           
+                           
+                           Integer FKLagerId = Integer.parseInt(eElement.getAttribute("FK_LAGER_ID"));
+                           if(FKLagerId == lagerId)
+                           {
+                                LagerBestand curLagerBestand = new LagerBestand();
+                                curLagerBestand.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                                curLagerBestand.setResId(Integer.parseInt(eElement.getElementsByTagName("FK_RES_ID").item(0).getTextContent()));
+                                curLagerBestand.setLagerId(Integer.parseInt(eElement.getElementsByTagName("FK_LAGER_ID").item(0).getTextContent()));
+                                curLagerBestand.setMenge(Integer.parseInt(eElement.getElementsByTagName("Menge").item(0).getTextContent()));
+                                
+                                LagerBestandList.add(curLagerBestand);
+                           }
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return LagerBestandList;
+    }
+    
+    @Override
     public int getLagerBestandCount()
     {         
          try {
@@ -1091,7 +1286,7 @@ public class XMLAccess implements IAccess {
 
                            Element eElement = (Element) nNode;
                            int curId = Integer.parseInt(eElement.getAttribute("P_ID"));    
-                           if(curId == lagerbestandID)
+                           if(curId == lagerbestandId)
                            {                                                              
                                nNode.getParentNode().removeChild(eElement);
                                return;
@@ -1130,7 +1325,7 @@ public class XMLAccess implements IAccess {
                            
                            
                            Integer pID = Integer.parseInt(eElement.getAttribute("P_ID"));
-                           if(pID == mitgliedID)
+                           if(pID == mitgliedId)
                            {
                                 curMitglied.setId(pID);
                                 curMitglied.setDorfID(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
@@ -1143,6 +1338,42 @@ public class XMLAccess implements IAccess {
        }         
        
        return curMitglied;
+    }
+    
+    @Override
+    public List<Mitglied> getMitglieder()
+    {
+        List<Mitglied> MitgliederListe = new ArrayList<Mitglied>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryMitglied";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+
+                        Mitglied curMitglied = new Mitglied();
+                        curMitglied.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                        curMitglied.setDorfID(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
+                        curMitglied.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
+                           
+                        MitgliederListe.add(curMitglied);
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return MitgliederListe;
     }
     
     @Override
@@ -1325,6 +1556,43 @@ public class XMLAccess implements IAccess {
     }
     
     @Override
+    public List<Ressource> getRessourcen()
+    {
+         List<Ressource> RessourcenListe = new ArrayList<Ressource>();
+         try {
+           
+           //optional, but recommended
+           //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+           m_Doc.getDocumentElement().normalize();
+    
+           String tableName = "entryRessource";
+           NodeList nList = m_Doc.getElementsByTagName(tableName);
+                      
+           for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                   Node nNode = nList.item(temp);
+                  
+                   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element eElement = (Element) nNode;
+                                       
+                        Ressource curRessource = new Ressource();
+                        curRessource.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
+                        curRessource.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
+                        curRessource.setGewicht(Integer.parseInt(eElement.getElementsByTagName("Gewicht").item(0).getTextContent()));
+                        curRessource.setPreis(Integer.parseInt(eElement.getElementsByTagName("Preis").item(0).getTextContent()));
+                        
+                        RessourcenListe.add(curRessource);
+                   }
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+       }         
+       
+       return RessourcenListe;
+    }
+    
+    @Override
     public int getRessourceCount()
     {         
          try {
@@ -1474,17 +1742,5 @@ public class XMLAccess implements IAccess {
        }                       
     }
     //////////////////////////
-
-    @Override
-    public Dorf[] getDorfliste() {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Lager[] getLagerliste(int dorfId) {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
 
