@@ -1,5 +1,8 @@
 package de.oszimt.DreiSchichten.controller;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -36,21 +39,23 @@ public class DBAccess implements IAccess {
   
   // Beruf-Table
   private PreparedStatement m_GetBeruf;
-  private PreparedStatement m_GetBerufCount;
+  private PreparedStatement m_GetBerufe;
+  private PreparedStatement m_GetBerufCount;  
   private PreparedStatement m_SetBeruf;
   private PreparedStatement m_AddBeruf;
   private PreparedStatement m_RemBeruf;
  
   // Berufstyp-Table
   private PreparedStatement m_GetBerufstyp;
-  private PreparedStatement m_GetBerufstypCount;
+  private PreparedStatement m_GetBerufstypen;
+  private PreparedStatement m_GetBerufstypCount;  
   private PreparedStatement m_SetBerufstyp;
   private PreparedStatement m_AddBerufstyp;
   private PreparedStatement m_RemBerufstyp;
   
   // Dorf-Table
   private PreparedStatement m_GetDorf;
-  private PreparedStatement m_GetDörfer;
+  private PreparedStatement m_GetDoerfer;
   private PreparedStatement m_GetDorfCount;
   private PreparedStatement m_SetDorf;
   private PreparedStatement m_AddDorf;
@@ -58,13 +63,15 @@ public class DBAccess implements IAccess {
   
   // Lager-Table
   private PreparedStatement m_GetLager;
-  private PreparedStatement m_GetLagerCount;
+  private PreparedStatement m_GetLagerListe;
+  private PreparedStatement m_GetLagerCount;  
   private PreparedStatement m_SetLager;
   private PreparedStatement m_AddLager;
   private PreparedStatement m_RemLager;
   
   // LagerBestand-Table
   private PreparedStatement m_GetLagerBestand;
+  private PreparedStatement m_GetLagerBestaende;
   private PreparedStatement m_SetLagerBestand;
   private PreparedStatement m_GetLagerBestandCount;
   private PreparedStatement m_AddLagerBestand;
@@ -72,6 +79,7 @@ public class DBAccess implements IAccess {
   
   // Mitglied-Table
   private PreparedStatement m_GetMitglied;
+  private PreparedStatement m_GetMitglieder;
   private PreparedStatement m_SetMitglied;
   private PreparedStatement m_GetMitgliedCount;
   private PreparedStatement m_AddMitglied;
@@ -79,6 +87,7 @@ public class DBAccess implements IAccess {
   
   // Ressource-Table
   private PreparedStatement m_GetRessource;
+  private PreparedStatement m_GetRessourcen;
   private PreparedStatement m_GetRessourceCount;
   private PreparedStatement m_SetRessource;
   private PreparedStatement m_AddRessource;
@@ -142,8 +151,10 @@ public class DBAccess implements IAccess {
         //// Beruf-Statements
         m_GetBeruf = m_Connection
                 .prepareStatement("SELECT P_ID, FK_TYP_ID, FK_Mitglied_ID, Punkte FROM Beruf WHERE P_ID = ?");
+        m_GetBerufe = m_Connection
+                .prepareStatement("SELECT P_ID, FK_TYP_ID, FK_Mitglied_ID, Punkte FROM Beruf WHERE FK_Mitglied_ID = ?");   
         m_GetBerufCount = m_Connection
-                .prepareStatement("SELECT COUNT(*) FROM Beruf");      
+                .prepareStatement("SELECT COUNT(*) FROM Beruf");               
         m_SetBeruf = m_Connection
                 .prepareStatement("UPDATE Beruf SET Punkte = ? WHERE P_ID = ?");
         m_AddBeruf = m_Connection                                                          // allerdings muss man hier einen Primary Key zurückgeben also entweder Int oder ein Object der Klasse
@@ -156,8 +167,10 @@ public class DBAccess implements IAccess {
         //// Berufstyp-Statements
         m_GetBerufstyp = m_Connection
                 .prepareStatement("SELECT P_ID, Name, SK1, SK2, SK3, SK4, SK5 FROM Berufstyp WHERE P_ID = ?");
+         m_GetBerufstypen = m_Connection
+                .prepareStatement("SELECT P_ID, Name, SK1, SK2, SK3, SK4, SK5 FROM Berufstyp");
         m_GetBerufstypCount = m_Connection        
-                .prepareStatement("SELECT COUNT(*) FROM Berufstyp");
+                .prepareStatement("SELECT COUNT(*) FROM Berufstyp");     
         m_SetBerufstyp = m_Connection
                 .prepareStatement("UPDATE Berufstyp SET Name = ?, SK1 = ?, SK2 = ?, SK3 = ?, SK4 = ?, SK5 = ? WHERE P_ID = ?");
         m_AddBerufstyp = m_Connection
@@ -169,8 +182,8 @@ public class DBAccess implements IAccess {
         //// Dorf-Statements
         m_GetDorf = m_Connection
                 .prepareStatement("SELECT P_ID, Name FROM Dorf WHERE P_ID = ?");        
-        m_GetDörfer = m_Connection
-                .prepareStatement("SELECT * FROM Dorf");                    // Edit-Marker
+        m_GetDoerfer = m_Connection
+                .prepareStatement("SELECT P_ID, Name FROM Dorf");                    
         m_GetDorfCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Dorf");
         m_SetDorf = m_Connection
@@ -184,6 +197,8 @@ public class DBAccess implements IAccess {
         //// Lager-Statements
         m_GetLager = m_Connection
                 .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Lager WHERE P_ID = ?");
+        m_GetLagerListe = m_Connection
+                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Lager WHERE FK_DORF_ID = ?");
         m_GetLagerCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Lager");   
         m_SetLager = m_Connection
@@ -197,6 +212,8 @@ public class DBAccess implements IAccess {
         //// LagerBestand-Statements
         m_GetLagerBestand = m_Connection                
                 .prepareStatement("SELECT P_ID, FK_RES_ID, FK_Lager_ID, Menge FROM LagerBestand WHERE P_ID = ?");
+         m_GetLagerBestaende = m_Connection                
+                .prepareStatement("SELECT P_ID, FK_RES_ID, FK_Lager_ID, Menge FROM LagerBestand WHERE FK_Lager_ID = ?");
         m_GetLagerBestandCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM LagerBestand");    
         m_SetLagerBestand = m_Connection
@@ -210,6 +227,8 @@ public class DBAccess implements IAccess {
         //// Mitglied-Statements
         m_GetMitglied = m_Connection
                 .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied WHERE P_ID = ?");
+        m_GetMitglieder = m_Connection
+                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied");
         m_GetMitgliedCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Mitglied");    
         m_SetMitglied = m_Connection
@@ -223,6 +242,8 @@ public class DBAccess implements IAccess {
         //// Ressource-Statements
         m_GetRessource = m_Connection
                 .prepareStatement("SELECT P_ID, Name, Gewicht, Preis FROM Ressource WHERE P_ID = ?");
+        m_GetRessourcen = m_Connection
+                .prepareStatement("SELECT P_ID, Name, Gewicht, Preis FROM Ressource");
         m_GetRessourceCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Ressource");    
         m_SetRessource = m_Connection
@@ -269,6 +290,30 @@ public class DBAccess implements IAccess {
       {     
           return curBeruf;
       }
+  }
+  
+  @Override
+  public List<Beruf> getBerufe(int mitgliedId)
+  {          
+      List<Beruf> BerufList = new ArrayList<Beruf>();
+      
+      try {       
+      m_GetBerufe.setInt(1, mitgliedId);
+      m_ResultSet = m_GetBerufe.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        long FK_TYP_ID = m_ResultSet.getLong(2);
+        long FK_Mitglied_ID = m_ResultSet.getLong(3);   
+        long Punkte = m_ResultSet.getLong(4);
+      
+        BerufList.add(new Beruf((int)tmpPID, (int)FK_TYP_ID, (int)FK_Mitglied_ID, (int)Punkte));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return BerufList;
   }
   
   @Override
@@ -360,6 +405,32 @@ public class DBAccess implements IAccess {
       {     
           return curBerufstyp;
       }
+  }
+  
+  @Override
+  public List<Berufstyp> getBerufstypen()
+  {          
+      List<Berufstyp> BerufstypenList = new ArrayList<Berufstyp>();
+      
+      try {       
+      m_ResultSet = m_GetBerufstypen.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        String Name = m_ResultSet.getObject(2).toString();
+        long SK1 = m_ResultSet.getLong(3);
+        long SK2 = m_ResultSet.getLong(4);
+        long SK3 = m_ResultSet.getLong(5);
+        long SK4 = m_ResultSet.getLong(6);
+        long SK5 = m_ResultSet.getLong(7);
+      
+        BerufstypenList.add(new Berufstyp((int)tmpPID, Name, (int)SK1, (int)SK2, (int)SK3, (int)SK4, (int)SK5));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return BerufstypenList;
   }
   
   @Override
@@ -462,10 +533,29 @@ public class DBAccess implements IAccess {
   
   
   @Override
+<<<<<<< HEAD
+  public List<Dorf> getDorfListe()
+  {       
+      List<Dorf> DorfList = new ArrayList<Dorf>();
+      try {
+          
+        m_ResultSet = m_GetDoerfer.executeQuery();                       
+        while(m_ResultSet.next())
+        {
+            long tmpPID = m_ResultSet.getLong(1);
+            String Name = m_ResultSet.getObject(2).toString();
+            DorfList.add(new Dorf((int)tmpPID, Name));          
+        }
+      } catch (SQLException e) {
+          
+      }
+      return DorfList;
+=======
   public Dorf[] getDorfliste()  // Edit-Marker
   {
       return new Dorf[]{};
       //todo m_GetDörfer
+>>>>>>> upstream/master
   }
   
   @Override
@@ -557,6 +647,29 @@ public class DBAccess implements IAccess {
       {     
           return curLager;
       }
+  }
+  
+  @Override
+  public List<Lager> getLagerListe(int dorfId)
+  {          
+      List<Lager> LagerList = new ArrayList<Lager>();
+      
+      try {       
+      m_GetLagerListe.setInt(1, dorfId);     
+      m_ResultSet = m_GetLagerListe.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        long tmpFKDorfId = m_ResultSet.getLong(2);
+        String Name = m_ResultSet.getObject(3).toString();
+      
+        LagerList.add(new Lager((int)tmpPID, (int)tmpFKDorfId, Name));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return LagerList;
   }
   
   @Override
@@ -652,6 +765,30 @@ public class DBAccess implements IAccess {
   }
   
   @Override
+  public List<LagerBestand> getLagerBestaende(int lagerId)
+  {          
+      List<LagerBestand> LagerBestaendeList = new ArrayList<LagerBestand>();
+      
+      try {       
+      m_GetLagerBestaende.setInt(1, lagerId);     
+      m_ResultSet = m_GetLagerBestaende.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        long tmpFKResID = m_ResultSet.getLong(2);
+        long tmpFKLagerID = m_ResultSet.getLong(3);
+        long Menge = m_ResultSet.getLong(4);
+      
+        LagerBestaendeList.add(new LagerBestand((int)tmpPID, (int)tmpFKResID, (int)tmpFKLagerID, (int)Menge));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return LagerBestaendeList;
+  }
+  
+  @Override
   public int getLagerBestandCount()
   {
       try {
@@ -732,7 +869,7 @@ public class DBAccess implements IAccess {
       
       tmpPID = m_ResultSet.getLong(1);
       FK_DORF_ID = m_ResultSet.getLong(2);
-      Name = m_ResultSet.getObject(2).toString();
+      Name = m_ResultSet.getObject(3).toString();
       
       curMitglied = new Mitglied((int)tmpPID, (int)FK_DORF_ID, Name);
       
@@ -742,6 +879,28 @@ public class DBAccess implements IAccess {
       {     
           return curMitglied;
       }
+  }
+  
+  @Override
+  public List<Mitglied> getMitglieder()
+  {          
+      List<Mitglied> MitgliederListe = new ArrayList<Mitglied>();
+      
+      try {       
+      m_ResultSet = m_GetMitglieder.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        long FK_DORF_ID = m_ResultSet.getLong(2);
+        String Name = m_ResultSet.getObject(3).toString();
+      
+        MitgliederListe.add(new Mitglied((int)tmpPID, (int)FK_DORF_ID, Name));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return MitgliederListe;
   }
   
   @Override
@@ -836,6 +995,30 @@ public class DBAccess implements IAccess {
   }
  
   @Override
+  public List<Ressource> getRessourcen()
+  {          
+      List<Ressource> RessourcenListe = new ArrayList<Ressource>();
+      
+      try {       
+      m_ResultSet = m_GetRessourcen.executeQuery();
+                
+      while(m_ResultSet.next())
+      {
+        long tmpPID = m_ResultSet.getLong(1);
+        String Name = m_ResultSet.getObject(2).toString();
+        long Gewicht = m_ResultSet.getLong(3);
+        long Preis = m_ResultSet.getLong(4);
+      
+        RessourcenListe.add(new Ressource((int)tmpPID, Name, (int)Gewicht, (int)Preis));
+      }                       
+      } catch (SQLException e)
+      {       
+      }
+      return RessourcenListe;
+  }
+  
+  
+  @Override
   public int getRessourceCount()
   {
       try {
@@ -897,6 +1080,8 @@ public class DBAccess implements IAccess {
         
       }
   }
+<<<<<<< HEAD
+=======
 
     @Override
     public Lager[] getLagerliste(int dorfId) {
@@ -938,4 +1123,5 @@ public class DBAccess implements IAccess {
         return null;
     }
   
+>>>>>>> upstream/master
 }
