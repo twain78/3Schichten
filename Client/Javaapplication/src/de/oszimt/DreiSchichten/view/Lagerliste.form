@@ -19,18 +19,12 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jlDorfname" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jlTitel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jbNeuesLager" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jlTitel" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" alignment="0" min="-2" pref="375" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane1" pref="376" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -39,16 +33,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jlTitel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jlDorfname" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jbNeuesLager" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="275" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jlTitel" min="-2" max="-2" attributes="0"/>
+                  <Component id="jbNeuesLager" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="300" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,18 +48,16 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jlTitel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Lager"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jlDorfname">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=" "/>
+        <Property name="text" type="java.lang.String" value="Lagerliste"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jbNeuesLager">
       <Properties>
         <Property name="text" type="java.lang.String" value="Neues Lager"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbNeuesLagerActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -79,10 +69,11 @@
         <Component class="javax.swing.JTable" name="jtLagerliste">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="3" rowCount="0">
+              <Table columnCount="4" rowCount="0">
                 <Column editable="true" title="Lager" type="java.lang.String"/>
-                <Column editable="true" title="Gesamtinhalt" type="java.lang.Integer"/>
+                <Column editable="true" title="Inhalt" type="java.lang.Integer"/>
                 <Column editable="true" title="Bearbeiten" type="java.lang.Object"/>
+                <Column editable="true" title="L&#xf6;schen" type="java.lang.Object"/>
               </Table>
             </Property>
           </Properties>

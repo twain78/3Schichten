@@ -5,6 +5,7 @@
  */
 package de.oszimt.DreiSchichten.view;
 
+import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Dorf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Konstantin Görlitz
  */
 public class Dorfliste extends javax.swing.JPanel {
+    
+    private ViewController viewcontroller;
 
     /**
      * Creates new form Dörfer
@@ -24,9 +27,14 @@ public class Dorfliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void setDörfer(Dorf[] dörfer){
+    public Dorfliste(Dorf[] dorfliste){
+        this();
+        setDörfer(dorfliste);
+    }
+    
+    public void setDörfer(Dorf[] dorfliste){
         DefaultTableModel model = (DefaultTableModel)jtDorfliste.getModel();
-        for(final Dorf dorf : dörfer){
+        for(final Dorf dorf : dorfliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
 
@@ -54,15 +62,20 @@ public class Dorfliste extends javax.swing.JPanel {
                 }
             });
             
-            Object[] row = {dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
+            Object[] row = {dorf.getId(), dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
                 button1, button2, button3};
             model.addRow(row);
             
         }
     }
     
+    public Dorfliste(Dorf[] dorfliste, ViewController vc){
+        this(dorfliste);
+        this.viewcontroller=vc;
+    }
+    
     private void öffneDorf(int id){
-        //openDorfView(id);
+        viewcontroller.changePanel("Lagerliste", id);
     }
     
     private void öffneEinwohner(int id){
@@ -70,7 +83,7 @@ public class Dorfliste extends javax.swing.JPanel {
     }
     
     private void löscheDorf(int id){
-        //deleteDorf(id);
+        this.viewcontroller.deleteDorf(id);
     }
 
     /**
@@ -87,7 +100,7 @@ public class Dorfliste extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtDorfliste = new javax.swing.JTable();
 
-        jlTitel.setText("Dörfer");
+        jlTitel.setText("Dorfliste");
 
         jbNeuesDorf.setText("Neues Dorf");
         jbNeuesDorf.addActionListener(new java.awt.event.ActionListener() {
@@ -101,15 +114,20 @@ public class Dorfliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
+                "ID", "Name", "Bevölkerung", "Lageranzahl", "Bearbeiten", "Einwohner", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jtDorfliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtDorflisteMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jtDorfliste);
@@ -121,31 +139,33 @@ public class Dorfliste extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbNeuesDorf))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlTitel)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jbNeuesDorf))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlTitel)
-                .addGap(34, 34, 34)
-                .addComponent(jbNeuesDorf)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlTitel)
+                    .addComponent(jbNeuesDorf))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbNeuesDorfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesDorfActionPerformed
-        //openAddDorf();
+        viewcontroller.changePanel("NeuesDorf", 0);
     }//GEN-LAST:event_jbNeuesDorfActionPerformed
+
+    private void jtDorflisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDorflisteMouseClicked
+        jtDorfliste.getValueAt(jtDorfliste.getSelectedRow(), 1);
+    }//GEN-LAST:event_jtDorflisteMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

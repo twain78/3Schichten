@@ -1,8 +1,7 @@
 package de.oszimt.DreiSchichten.view;
 
-import de.oszimt.DreiSchichten.controller.DBAccess;
 import de.oszimt.DreiSchichten.controller.ViewController;
-import de.oszimt.DreiSchichten.model.Lager;
+import de.oszimt.DreiSchichten.model.Mitglied;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -12,30 +11,30 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Konstantin Görlitz
  */
-public class Lagerliste extends javax.swing.JPanel {
+public class Mitgliederliste extends javax.swing.JPanel {
+    
     private ViewController viewcontroller;
 
     /**
-     * Creates new form Lagerliste
+     * Creates new form Mitgliederliste
      */
-    public Lagerliste() {
+    public Mitgliederliste() {
         initComponents();
     }
     
-    public Lagerliste(Lager[] lagerliste){
+    public Mitgliederliste(Mitglied[] mitgliederliste){
         this();
-        setDörfer(lagerliste);
+        setMitglieder(mitgliederliste);
     }
     
-    public void setDörfer(Lager[] lagerliste){
-        DefaultTableModel model = (DefaultTableModel)jtLagerliste.getModel();
-        for(final Lager lager : lagerliste){
+    public void setMitglieder(Mitglied[] mitgliederliste){
+        DefaultTableModel model = (DefaultTableModel)jtMitgliederliste.getModel();
+        for(final Mitglied mitglied : mitgliederliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneLager(lager.getId());
+                    öffneMitglied(mitglied.getId());
                 }
             });
             
@@ -44,19 +43,21 @@ public class Lagerliste extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    löscheLager(lager.getId());
+                    löscheMitglied(mitglied.getId());
                 }
             });
             
-            Object[] row = {lager.getName(), new DBAccess().getRessourceCount() ,
+            
+            
+            Object[] row = {mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
                 button1, button2};
             model.addRow(row);
             
         }
     }
     
-    public Lagerliste(Lager[] lagerliste, ViewController vc){
-        this(lagerliste);
+    public Mitgliederliste(Mitglied[] mitgliederliste, ViewController vc){
+        this(mitgliederliste);
         this.viewcontroller=vc;
     }
 
@@ -70,36 +71,36 @@ public class Lagerliste extends javax.swing.JPanel {
     private void initComponents() {
 
         jlTitel = new javax.swing.JLabel();
-        jbNeuesLager = new javax.swing.JButton();
+        jbNeuesMitglied = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jtLagerliste = new javax.swing.JTable();
+        jtMitgliederliste = new javax.swing.JTable();
 
-        jlTitel.setText("Lagerliste");
+        jlTitel.setText("Mitliederliste");
 
-        jbNeuesLager.setText("Neues Lager");
-        jbNeuesLager.addActionListener(new java.awt.event.ActionListener() {
+        jbNeuesMitglied.setText("Neues Mitglied");
+        jbNeuesMitglied.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbNeuesLagerActionPerformed(evt);
+                jbNeuesMitgliedActionPerformed(evt);
             }
         });
 
-        jtLagerliste.setModel(new javax.swing.table.DefaultTableModel(
+        jtMitgliederliste.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Lager", "Inhalt", "Bearbeiten", "Löschen"
+                "Name", "Beruf", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jtLagerliste);
+        jScrollPane1.setViewportView(jtMitgliederliste);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -111,39 +112,41 @@ public class Lagerliste extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlTitel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbNeuesLager))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jbNeuesMitglied))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlTitel)
-                    .addComponent(jbNeuesLager))
+                    .addComponent(jbNeuesMitglied))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbNeuesLagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesLagerActionPerformed
-        viewcontroller.changePanel("NeuesLager", 0);
-    }//GEN-LAST:event_jbNeuesLagerActionPerformed
+    private void jbNeuesMitgliedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesMitgliedActionPerformed
+        viewcontroller.changePanel("NeuesMitglied", 0);
+    }//GEN-LAST:event_jbNeuesMitgliedActionPerformed
 
-    private void öffneLager(int id){
-        this.viewcontroller.changePanel("Lagerliste", id);
+    private void öffneMitglied(int id){
+        this.viewcontroller.changePanel("NeuesMitglied", id);
     }
     
-    private void löscheLager(int id){
-        this.viewcontroller.deleteLager(id);
+    private void löscheMitglied(int id){
+        this.viewcontroller.deleteMitglied(id);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton jbNeuesLager;
+    private javax.swing.JButton jbNeuesMitglied;
     private javax.swing.JLabel jlTitel;
-    private javax.swing.JTable jtLagerliste;
+    private javax.swing.JTable jtMitgliederliste;
     // End of variables declaration//GEN-END:variables
 }
