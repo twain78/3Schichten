@@ -8,6 +8,7 @@ import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
 import de.oszimt.DreiSchichten.view.Dorfliste;
 import de.oszimt.DreiSchichten.view.Lagerliste;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -38,17 +39,17 @@ public class ViewController {
         frame.add(aktuellesPanel);
         frame.setVisible(true);
         Dorfliste d = (Dorfliste)aktuellesPanel;
-        d.setDörfer(db.getDorfliste());
+        d.setDörfer(db.getDorfListe());
     }
     
     public void changePanel(String value, int id){
         switch(value){
             case "Dorfliste":
-                this.aktuellesPanel=new Dorfliste(db.getDorfliste());
+                this.aktuellesPanel=new Dorfliste(db.getDorfListe());
                 frame.add(aktuellesPanel);
                 break;
             case "Lagerliste":
-                this.aktuellesPanel=new Lagerliste(db.getLagerliste(id));
+                this.aktuellesPanel=new Lagerliste(db.getLagerListe(id));
                 frame.add(aktuellesPanel);
                 break;
             default:
@@ -91,31 +92,31 @@ public class ViewController {
         return db.getRessource(id).getName();
     }
     
-    public Ressource[] getRessourcen(){
+    public List<Ressource> getRessourcen(){
         return db.getRessourcen();
     }
     
-    public Berufstyp[] getBerufstypen(){
+    public List<Berufstyp> getBerufstypen(){
         return db.getBerufstypen();
     }
     
-    public void updateLagerbestand(int id, String ressourcename, int menge){
-        db.updateLagerbestand(id, ressourcename, menge);
+    public void updateLagerbestand(LagerBestand lagerbestand){
+        db.setLagerBestand(lagerbestand);
     }
     
-    public void updateBeruf(int id, String berufsname, int punkte){
-        db.updateBeruf(id, berufsname, punkte);
+    public void updateBeruf(Beruf beruf){
+        db.setBeruf(beruf);
     }
     
-    public LagerBestand[] getLagerbestand(int lagerid){
-        return db.getLagerBestände(lagerid);
+    public List<LagerBestand> getLagerbestand(int lagerid){
+        return db.getLagerBestaende(lagerid);
     }
     
     public String getBerufName(int id){
         return db.getBerufstyp(id).getName();
     }
     
-    public Beruf[] getBerufe(int mitgliedid){
+    public List<Beruf> getBerufe(int mitgliedid){
         return db.getBerufe(mitgliedid);
     }
     

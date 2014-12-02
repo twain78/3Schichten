@@ -9,6 +9,7 @@ import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Dorf;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,12 +28,12 @@ public class Dorfliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public Dorfliste(Dorf[] dorfliste){
+    public Dorfliste(List<Dorf> dorfliste){
         this();
         setDörfer(dorfliste);
     }
     
-    public void setDörfer(Dorf[] dorfliste){
+    public void setDörfer(List<Dorf> dorfliste){
         DefaultTableModel model = (DefaultTableModel)jtDorfliste.getModel();
         for(final Dorf dorf : dorfliste){
             JButton button1 = new JButton("B");
@@ -69,7 +70,7 @@ public class Dorfliste extends javax.swing.JPanel {
         }
     }
     
-    public Dorfliste(Dorf[] dorfliste, ViewController vc){
+    public Dorfliste(List<Dorf> dorfliste, ViewController vc){
         this(dorfliste);
         this.viewcontroller=vc;
     }

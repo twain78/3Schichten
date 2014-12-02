@@ -5,6 +5,7 @@ import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Lager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,12 +23,12 @@ public class Lagerliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public Lagerliste(Lager[] lagerliste){
+    public Lagerliste(List<Lager> lagerliste){
         this();
         setDörfer(lagerliste);
     }
     
-    public void setDörfer(Lager[] lagerliste){
+    public void setDörfer(List<Lager> lagerliste){
         DefaultTableModel model = (DefaultTableModel)jtLagerliste.getModel();
         for(final Lager lager : lagerliste){
             JButton button1 = new JButton("B");
@@ -55,7 +56,7 @@ public class Lagerliste extends javax.swing.JPanel {
         }
     }
     
-    public Lagerliste(Lager[] lagerliste, ViewController vc){
+    public Lagerliste(List<Lager> lagerliste, ViewController vc){
         this(lagerliste);
         this.viewcontroller=vc;
     }

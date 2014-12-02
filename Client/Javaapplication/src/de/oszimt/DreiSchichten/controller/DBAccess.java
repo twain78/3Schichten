@@ -533,7 +533,6 @@ public class DBAccess implements IAccess {
   
   
   @Override
-<<<<<<< HEAD
   public List<Dorf> getDorfListe()
   {       
       List<Dorf> DorfList = new ArrayList<Dorf>();
@@ -550,12 +549,6 @@ public class DBAccess implements IAccess {
           
       }
       return DorfList;
-=======
-  public Dorf[] getDorfliste()  // Edit-Marker
-  {
-      return new Dorf[]{};
-      //todo m_GetDörfer
->>>>>>> upstream/master
   }
   
   @Override
@@ -1080,48 +1073,6 @@ public class DBAccess implements IAccess {
         
       }
   }
-<<<<<<< HEAD
-=======
 
-    @Override
-    public Lager[] getLagerliste(int dorfId) {
-        // todo Methode implementieren
-        return new Lager[]{};
-    }
-
-    @Override
-    public Ressource[] getRessourcen() {
-        // todo Methode Implementieren, holt alle Ressourcen aus der Datenbank
-        return null;
-    }
-
-    @Override
-    public void updateLagerbestand(int id, String ressourcename, int menge) {
-        // todo die Methode soll einen bestehenden Lagerbestand anhand der LAGERID ändern
-    }
-
-    @Override
-    public LagerBestand[] getLagerBestände(int lagerId) {
-        // todo die methode soll alle Lagerbestände zu einer Lager Id zurück geben
-        return null;
-    }
-
-    @Override
-    public Berufstyp[] getBerufstypen() {
-        // todo die methode soll alle Berufstypen zurück geben
-        return null;
-    }
-
-    @Override
-    public void updateBeruf(int id, String berufsname, int punkte) {
-        // todo die methode einen beruf updaten anhand der mitgliedid und des berufsnamens
-    }
-
-    @Override
-    public Beruf[] getBerufe(int mitgliedId) {
-        // todo die methode gibt alle Berufe zu einer Mitglieds id zurück
-        return null;
-    }
   
->>>>>>> upstream/master
 }

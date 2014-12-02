@@ -3,10 +3,9 @@ package de.oszimt.DreiSchichten.view;
 import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Beruf;
 import de.oszimt.DreiSchichten.model.Berufstyp;
-import de.oszimt.DreiSchichten.model.LagerBestand;
-import de.oszimt.DreiSchichten.model.Ressource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +17,7 @@ public class Berufsliste extends javax.swing.JPanel {
 
     private ViewController viewcontroller;
     private int mitgliedid;
+    private List<Beruf> berufsliste;
     
     /**
      * Creates new form Berufsliste
@@ -33,13 +33,13 @@ public class Berufsliste extends javax.swing.JPanel {
         }
     }
     
-    public Berufsliste(Beruf[] berufe){
+    public Berufsliste(List<Beruf> berufe){
         this();
         setInhalte(berufe);
-        this.mitgliedid=berufe[0].getMitgliedID();
+        this.berufsliste=berufe;
     }
     
-    public void setInhalte(Beruf[] berufe){
+    public void setInhalte(List<Beruf> berufe){
         DefaultTableModel model = (DefaultTableModel)jtBerufliste.getModel();
         model.setRowCount(0);
         for(final Beruf beruf : berufe){
@@ -52,16 +52,25 @@ public class Berufsliste extends javax.swing.JPanel {
             });
             
             
-            Object[] row = {viewcontroller.getBerufName(beruf.getTypID()), beruf.getPunkte(),
+            Object[] row = {beruf.getId(), viewcontroller.getBerufName(beruf.getTypID()), beruf.getPunkte(),
                 button1};
             model.addRow(row);
             
         }
     }
     
-    public Berufsliste(Beruf[] berufe, ViewController vc){
+    public Berufsliste(List<Beruf> berufe, ViewController vc){
         this(berufe);
         this.viewcontroller=vc;
+    }
+    
+    private Beruf findeBeruf(int berufid){
+        for(Beruf beruf : this.berufsliste){
+            if(beruf.getId()==berufid){
+                return beruf;
+            }
+        }
+        return null;
     }
 
     /**
@@ -107,11 +116,11 @@ public class Berufsliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Beruf", "Punkte", "Löschen"
+                "Beruf ID", "Beruf", "Punkte", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -175,11 +184,13 @@ public class Berufsliste extends javax.swing.JPanel {
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
         boolean temp=true;
         Berufstyp selectedBeruf = (Berufstyp)jcBeruf.getSelectedItem();
-        for(int i=0; i<jtBerufliste.getRowCount(); i++){
-            if(selectedBeruf.getName().equals(jtBerufliste.getModel().getValueAt(0, i))){
-                jtBerufliste.getModel().setValueAt((Integer.parseInt(jtBerufliste.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtPunkte.getText())), i, 1);
+        for(int i=1; i<jtBerufliste.getRowCount(); i++){
+            if(selectedBeruf.getName().equals(jtBerufliste.getModel().getValueAt(2, i))){
+                jtBerufliste.getModel().setValueAt((Integer.parseInt(jtBerufliste.getModel().getValueAt(2, i).toString())+Integer.parseInt(jtPunkte.getText())), i, 3);
                 temp=false;
-                viewcontroller.updateBeruf(this.mitgliedid, jtBerufliste.getModel().getValueAt(0, i).toString(), Integer.parseInt(jtBerufliste.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtPunkte.getText()));
+                Beruf b = findeBeruf(Integer.parseInt(jtBerufliste.getValueAt(i, 1).toString()));
+                b.setPunkte(Integer.parseInt(jtBerufliste.getValueAt(i, 3).toString()));
+                viewcontroller.updateBeruf(b);
             }
             
         }

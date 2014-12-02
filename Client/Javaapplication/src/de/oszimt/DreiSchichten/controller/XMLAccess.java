@@ -1,21 +1,16 @@
 package de.oszimt.DreiSchichten.controller;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import java.io.File;
-import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 // w3c-Standards
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -1740,19 +1735,6 @@ public class XMLAccess implements IAccess {
        } catch (Exception e) {
            e.printStackTrace();
        }                       
-    }
-    //////////////////////////
-
-    @Override
-    public Dorf[] getDorfliste() {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Lager[] getLagerliste(int dorfId) {
-        //todo
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 
