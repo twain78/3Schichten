@@ -1,12 +1,16 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
+import de.oszimt.DreiSchichten.model.Dorf;
 
 /**
  *
- * @author b-kg104
+ * @author Konstantin Görlitz
  */
 public class NeuesDorf extends javax.swing.JPanel {
+    
+    private Dorf dorf;
+    private int dorfID;
     
     ViewController viewcontroller;
 
@@ -18,7 +22,14 @@ public class NeuesDorf extends javax.swing.JPanel {
     }
     
     public NeuesDorf(ViewController vc){
+        this();
         this.viewcontroller=vc;
+        this.dorf=new Dorf();
+    }
+    
+    public NeuesDorf(ViewController vc, Dorf dorf){
+        this(vc);
+        this.dorf=dorf;
     }
 
     /**
@@ -77,7 +88,12 @@ public class NeuesDorf extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
-        viewcontroller.addDorf(jtName.getText());
+        this.dorf.setName(jtName.getText());
+        if(this.dorf.getId()>0){
+            viewcontroller.setDorf(this.dorf);
+        } else {
+            viewcontroller.addDorf(this.dorf);
+        }
         viewcontroller.changePanel("Dorfliste", 0);
     }//GEN-LAST:event_jbAddActionPerformed
 

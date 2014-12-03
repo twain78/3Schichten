@@ -1,12 +1,16 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
+import de.oszimt.DreiSchichten.model.Mitglied;
 
 /**
  *
  * @author Konstantin Görlitz
  */
 public class NeuesMitglied extends javax.swing.JPanel {
+    
+    private Mitglied mitglied;
+    private int dorfID;
     
     ViewController viewcontroller;
 
@@ -17,8 +21,17 @@ public class NeuesMitglied extends javax.swing.JPanel {
         initComponents();
     }
     
-    public NeuesMitglied(ViewController vc){
+    public NeuesMitglied(ViewController vc, int dorfID){
+        this();
         this.viewcontroller=vc;
+        this.dorfID=dorfID;
+        this.mitglied=new Mitglied();
+    }
+    
+    public NeuesMitglied(ViewController vc, Mitglied mitglied){
+        this();
+        this.mitglied=mitglied;
+        jtName.setText(mitglied.getName());
     }
 
     /**
@@ -77,7 +90,13 @@ public class NeuesMitglied extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
-        viewcontroller.addMitglied(jtName.getText());
+        this.mitglied.setName(jtName.getText());
+        if(this.mitglied.getId()>0){
+            viewcontroller.setMitglied(this.mitglied);
+        } else {
+            this.mitglied.setDorfID(this.dorfID);
+            viewcontroller.addMitglied(this.mitglied);
+        }
         viewcontroller.changePanel("Mitgliederliste", 0);
     }//GEN-LAST:event_jbAddActionPerformed
 

@@ -1,12 +1,16 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
+import de.oszimt.DreiSchichten.model.Lager;
 
 /**
  *
  * @author Konstantin Görlitz
  */
 public class NeuesLager extends javax.swing.JPanel {
+    
+    private Lager lager;
+    private int dorfID;
     
     ViewController viewcontroller;
 
@@ -17,8 +21,17 @@ public class NeuesLager extends javax.swing.JPanel {
         initComponents();
     }
     
-    public NeuesLager(ViewController vc){
+    public NeuesLager(ViewController vc, int dorfID){
+        this();
         this.viewcontroller=vc;
+        this.dorfID=dorfID;
+        this.lager=new Lager();
+    }
+    
+    public NeuesLager(ViewController vc, Lager lager){
+        this();
+        this.viewcontroller=vc;
+        this.lager=lager;
     }
 
     /**
@@ -77,7 +90,13 @@ public class NeuesLager extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
-        viewcontroller.addDorf(jtName.getText());
+        this.lager.setName(jtName.getText());
+        if(this.lager.getId()>0){
+            viewcontroller.setLager(this.lager);
+        } else {
+            this.lager.setDorfId(this.dorfID);
+            viewcontroller.addLager(this.lager);
+        }
         viewcontroller.changePanel("Lagerliste", viewcontroller.getBucketDorf().getId());
     }//GEN-LAST:event_jbAddActionPerformed
 

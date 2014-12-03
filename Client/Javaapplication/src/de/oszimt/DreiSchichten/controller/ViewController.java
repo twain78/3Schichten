@@ -3,6 +3,7 @@ package de.oszimt.DreiSchichten.controller;
 import de.oszimt.DreiSchichten.model.Beruf;
 import de.oszimt.DreiSchichten.model.Berufstyp;
 import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
@@ -128,11 +129,27 @@ public class ViewController {
         return bucket.getDorf();
     }
     
-    public void addDorf(String dorfname){
-        db.addDorf(new Dorf(0, dorfname));
+    public void addDorf(Dorf dorf){
+        db.addDorf(dorf);
     }
     
-    public void addMitglied(String mitgliedsname){
-        db.addMitglied(new Mitglied(0, bucket.getDorf().getId(), mitgliedsname));
+    public void setDorf(Dorf dorf){
+        db.setDorf(dorf);
+    }
+    
+    public void setMitglied(Mitglied mitglied){
+        db.setMitglied(mitglied);
+    }
+    
+    public void addMitglied(Mitglied mitglied){
+        db.addMitglied(mitglied);
+    }
+    
+    public void setLager(Lager lager){
+        db.setLager(lager);
+    }
+    
+    public void addLager(Lager lager){
+        db.addLager(lager);
     }
 }

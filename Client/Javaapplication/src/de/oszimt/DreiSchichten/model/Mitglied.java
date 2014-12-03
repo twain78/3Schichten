@@ -3,7 +3,7 @@ package de.oszimt.DreiSchichten.model;
 
 /**
  *
- * @author konstantin.görlitz
+ * @author Konstantin Görlitz
  */
 public class Mitglied {
     private int id;
