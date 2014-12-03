@@ -49,7 +49,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
             
             
             
-            Object[] row = {mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
+            Object[] row = {mitglied.getId(), mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
                 button1, button2};
             model.addRow(row);
             
@@ -89,15 +89,20 @@ public class Mitgliederliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Name", "Beruf", "Bearbeiten", "Löschen"
+                "Mitglied ID", "Name", "Beruf", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jtMitgliederliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtMitgliederlisteMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jtMitgliederliste);
@@ -134,6 +139,13 @@ public class Mitgliederliste extends javax.swing.JPanel {
     private void jbNeuesMitgliedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesMitgliedActionPerformed
         viewcontroller.changePanel("NeuesMitglied", 0);
     }//GEN-LAST:event_jbNeuesMitgliedActionPerformed
+
+    private void jtMitgliederlisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtMitgliederlisteMouseClicked
+        if(jtMitgliederliste.getSelectedRow()>0){
+            jtMitgliederliste.getModel().getValueAt(jtMitgliederliste.getSelectedRow(), 1);
+            viewcontroller.changePanel("NeuesMitglied", Integer.parseInt(jtMitgliederliste.getModel().getValueAt(jtMitgliederliste.getSelectedRow(), 1).toString()));
+        }
+    }//GEN-LAST:event_jtMitgliederlisteMouseClicked
 
     private void öffneMitglied(int id){
         this.viewcontroller.changePanel("NeuesMitglied", id);

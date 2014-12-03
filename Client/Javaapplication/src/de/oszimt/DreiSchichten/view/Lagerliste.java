@@ -25,10 +25,10 @@ public class Lagerliste extends javax.swing.JPanel {
     
     public Lagerliste(List<Lager> lagerliste){
         this();
-        setDörfer(lagerliste);
+        setLager(lagerliste);
     }
     
-    public void setDörfer(List<Lager> lagerliste){
+    public void setLager(List<Lager> lagerliste){
         DefaultTableModel model = (DefaultTableModel)jtLagerliste.getModel();
         for(final Lager lager : lagerliste){
             JButton button1 = new JButton("B");
@@ -49,7 +49,7 @@ public class Lagerliste extends javax.swing.JPanel {
                 }
             });
             
-            Object[] row = {lager.getName(), new DBAccess().getRessourceCount() ,
+            Object[] row = {lager.getId(), lager.getName(), new DBAccess().getRessourceCount() ,
                 button1, button2};
             model.addRow(row);
             
@@ -89,15 +89,20 @@ public class Lagerliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Lager", "Inhalt", "Bearbeiten", "Löschen"
+                "Lager ID", "Lager", "Inhalt", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jtLagerliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtLagerlisteMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jtLagerliste);
@@ -132,6 +137,13 @@ public class Lagerliste extends javax.swing.JPanel {
     private void jbNeuesLagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNeuesLagerActionPerformed
         viewcontroller.changePanel("NeuesLager", 0);
     }//GEN-LAST:event_jbNeuesLagerActionPerformed
+
+    private void jtLagerlisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtLagerlisteMouseClicked
+        if(jtLagerliste.getSelectedRow()>0){
+            jtLagerliste.getModel().getValueAt(jtLagerliste.getSelectedRow(), 1);
+            viewcontroller.changePanel("Lagerinhalt", Integer.parseInt(jtLagerliste.getModel().getValueAt(jtLagerliste.getSelectedRow(), 1).toString()));
+        }
+    }//GEN-LAST:event_jtLagerlisteMouseClicked
 
     private void öffneLager(int id){
         this.viewcontroller.changePanel("Lagerliste", id);

@@ -165,7 +165,10 @@ public class Dorfliste extends javax.swing.JPanel {
     }//GEN-LAST:event_jbNeuesDorfActionPerformed
 
     private void jtDorflisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtDorflisteMouseClicked
-        jtDorfliste.getValueAt(jtDorfliste.getSelectedRow(), 1);
+        if(jtDorfliste.getSelectedRow()>0){
+            jtDorfliste.getModel().getValueAt(jtDorfliste.getSelectedRow(), 1);
+            viewcontroller.changePanel("Lagerliste", Integer.parseInt(jtDorfliste.getModel().getValueAt(jtDorfliste.getSelectedRow(), 1).toString()));
+        }
     }//GEN-LAST:event_jtDorflisteMouseClicked
 
 
