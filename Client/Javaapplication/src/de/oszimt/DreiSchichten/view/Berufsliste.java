@@ -195,6 +195,11 @@ public class Berufsliste extends javax.swing.JPanel {
             
         }
         if(temp){
+            Beruf newBeruf = new Beruf();
+            newBeruf.setTypID(selectedBeruf.getId());
+            newBeruf.setMitgliedID(mitgliedid);
+            newBeruf.setPunkte(Integer.parseInt(jtPunkte.getText()));
+            viewcontroller.addBeruf(newBeruf);
             setInhalte(viewcontroller.getBerufe(mitgliedid));
         }
     }//GEN-LAST:event_jbAddActionPerformed

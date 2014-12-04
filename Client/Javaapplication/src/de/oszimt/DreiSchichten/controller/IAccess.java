@@ -64,7 +64,7 @@ public interface IAccess {
 
   
   public Mitglied getMitglied(int mitgliedId);
-  public List<Mitglied> getMitglieder();
+  public List<Mitglied> getMitglieder(int dorfId);
   public int getMitgliedCount();
   public void setMitglied(Mitglied curMitglied);
   public int addMitglied(Mitglied newMitglied);

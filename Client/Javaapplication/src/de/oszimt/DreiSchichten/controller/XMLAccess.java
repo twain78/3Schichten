@@ -1336,7 +1336,7 @@ public class XMLAccess implements IAccess {
     }
     
     @Override
-    public List<Mitglied> getMitglieder()
+    public List<Mitglied> getMitglieder(int dorfId)
     {
         List<Mitglied> MitgliederListe = new ArrayList<Mitglied>();
          try {
@@ -1357,9 +1357,13 @@ public class XMLAccess implements IAccess {
                         Element eElement = (Element) nNode;
 
                         Mitglied curMitglied = new Mitglied();
-                        curMitglied.setId(Integer.parseInt(eElement.getElementsByTagName("P_ID").item(0).getTextContent()));
-                        curMitglied.setDorfID(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
-                        curMitglied.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
+                        
+                        Integer fk_dorf_ID = Integer.parseInt(eElement.getAttribute("FK_DORF_ID"));
+                        if(fk_dorf_ID == dorfId){
+                            curMitglied.setId(fk_dorf_ID);
+                            curMitglied.setDorfID(Integer.parseInt(eElement.getElementsByTagName("FK_DORF_ID").item(0).getTextContent()));
+                            curMitglied.setName(eElement.getElementsByTagName("Name").item(0).getTextContent());
+                        }
                            
                         MitgliederListe.add(curMitglied);
                    }

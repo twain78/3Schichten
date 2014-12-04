@@ -41,11 +41,11 @@ public class Dorfliste extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneDorf(dorf.getId());
+                    bearbeiteDorf(dorf.getId());
                 }
             });
             
-            JButton button2 = new JButton("P");
+            JButton button2 = new JButton("E");
             button2.addActionListener(new ActionListener() {
 
                 @Override
@@ -75,16 +75,17 @@ public class Dorfliste extends javax.swing.JPanel {
         this.viewcontroller=vc;
     }
     
-    private void öffneDorf(int id){
-        viewcontroller.changePanel("Lagerliste", id);
+    private void bearbeiteDorf(int id){
+        viewcontroller.changePanel("BearbeiteDorf", id);
     }
     
     private void öffneEinwohner(int id){
-        //openEinwohnerView(id);
+        viewcontroller.changePanel("Mitgliederliste", id);
     }
     
     private void löscheDorf(int id){
         this.viewcontroller.deleteDorf(id);
+        jtDorfliste.remove(jtDorfliste.getSelectedRow());
     }
 
     /**

@@ -36,7 +36,7 @@ public class Lagerliste extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneLager(lager.getId());
+                    bearbeiteLager(lager.getId());
                 }
             });
             
@@ -145,12 +145,13 @@ public class Lagerliste extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jtLagerlisteMouseClicked
 
-    private void öffneLager(int id){
-        this.viewcontroller.changePanel("Lagerliste", id);
+    private void bearbeiteLager(int id){
+        this.viewcontroller.changePanel("BearbeiteLager", id);
     }
     
     private void löscheLager(int id){
         this.viewcontroller.deleteLager(id);
+        jtLagerliste.remove(jtLagerliste.getSelectedRow());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

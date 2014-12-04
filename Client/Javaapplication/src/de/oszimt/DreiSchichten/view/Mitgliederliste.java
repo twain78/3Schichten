@@ -4,6 +4,7 @@ import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,19 +23,19 @@ public class Mitgliederliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public Mitgliederliste(Mitglied[] mitgliederliste){
+    public Mitgliederliste(List<Mitglied> mitgliederliste){
         this();
         setMitglieder(mitgliederliste);
     }
     
-    public void setMitglieder(Mitglied[] mitgliederliste){
+    public void setMitglieder(List<Mitglied> mitgliederliste){
         DefaultTableModel model = (DefaultTableModel)jtMitgliederliste.getModel();
         for(final Mitglied mitglied : mitgliederliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneMitglied(mitglied.getId());
+                    bearbeiteMitglied(mitglied.getId());
                 }
             });
             
@@ -56,7 +57,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
         }
     }
     
-    public Mitgliederliste(Mitglied[] mitgliederliste, ViewController vc){
+    public Mitgliederliste(List<Mitglied> mitgliederliste, ViewController vc){
         this(mitgliederliste);
         this.viewcontroller=vc;
     }
@@ -147,12 +148,13 @@ public class Mitgliederliste extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jtMitgliederlisteMouseClicked
 
-    private void öffneMitglied(int id){
-        this.viewcontroller.changePanel("NeuesMitglied", id);
+    private void bearbeiteMitglied(int id){
+        this.viewcontroller.changePanel("BearbeiteMitglied", id);
     }
     
     private void löscheMitglied(int id){
         this.viewcontroller.deleteMitglied(id);
+        jtMitgliederliste.remove(jtMitgliederliste.getSelectedRow());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

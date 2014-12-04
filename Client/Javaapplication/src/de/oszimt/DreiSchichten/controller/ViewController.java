@@ -7,8 +7,14 @@ import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
+import de.oszimt.DreiSchichten.view.Berufsliste;
 import de.oszimt.DreiSchichten.view.Dorfliste;
+import de.oszimt.DreiSchichten.view.Lagerinhalt;
 import de.oszimt.DreiSchichten.view.Lagerliste;
+import de.oszimt.DreiSchichten.view.Mitgliederliste;
+import de.oszimt.DreiSchichten.view.NeuesDorf;
+import de.oszimt.DreiSchichten.view.NeuesLager;
+import de.oszimt.DreiSchichten.view.NeuesMitglied;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,6 +57,42 @@ public class ViewController {
                 break;
             case "Lagerliste":
                 this.aktuellesPanel=new Lagerliste(db.getLagerListe(id));
+                frame.add(aktuellesPanel);
+                break;
+            case "Berufsliste":
+                this.aktuellesPanel=new Berufsliste(db.getBerufe(id), this);
+                frame.add(aktuellesPanel);
+                break;
+            case "Lagerinhalt":
+                this.aktuellesPanel=new Lagerinhalt(db.getLagerBestaende(id), this);
+                frame.add(aktuellesPanel);
+                break;
+            case "Mitgliederliste":
+                this.aktuellesPanel=new Mitgliederliste(db.getMitglieder(id), this);
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesDorf":
+                this.aktuellesPanel=new NeuesDorf(this);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteDorf":
+                this.aktuellesPanel=new NeuesDorf(this, db.getDorf(id));
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesLager":
+                this.aktuellesPanel=new NeuesLager(this, id);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteLager":
+                this.aktuellesPanel=new NeuesLager(this, db.getLager(id));
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesMitglied":
+                this.aktuellesPanel=new NeuesMitglied(this, id);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteMitglied":
+                this.aktuellesPanel=new NeuesMitglied(this, db.getMitglied(id));
                 frame.add(aktuellesPanel);
                 break;
             default:
@@ -109,8 +151,16 @@ public class ViewController {
         db.setBeruf(beruf);
     }
     
+    public void addLagerbestand(LagerBestand lagerbestand){
+        db.addLagerBestand(lagerbestand);
+    }
+    
     public List<LagerBestand> getLagerbestand(int lagerid){
         return db.getLagerBestaende(lagerid);
+    }
+    
+    public void addBeruf(Beruf beruf){
+        db.addBeruf(beruf);
     }
     
     public String getBerufName(int id){

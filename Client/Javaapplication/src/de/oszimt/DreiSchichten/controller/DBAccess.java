@@ -228,7 +228,7 @@ public class DBAccess implements IAccess {
         m_GetMitglied = m_Connection
                 .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied WHERE P_ID = ?");
         m_GetMitglieder = m_Connection
-                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied");
+                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied WHERE FK_DORF_ID = ?");
         m_GetMitgliedCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Mitglied");    
         m_SetMitglied = m_Connection
@@ -875,11 +875,12 @@ public class DBAccess implements IAccess {
   }
   
   @Override
-  public List<Mitglied> getMitglieder()
+  public List<Mitglied> getMitglieder(int dorfId)
   {          
       List<Mitglied> MitgliederListe = new ArrayList<Mitglied>();
       
-      try {       
+      try { 
+      m_GetMitglieder.setInt(1, dorfId);
       m_ResultSet = m_GetMitglieder.executeQuery();
                 
       while(m_ResultSet.next())

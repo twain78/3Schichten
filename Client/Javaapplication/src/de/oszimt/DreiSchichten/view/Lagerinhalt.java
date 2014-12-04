@@ -195,7 +195,11 @@ public class Lagerinhalt extends javax.swing.JPanel {
             
         }
         if(temp){
-            DefaultTableModel model = (DefaultTableModel)jtLagerinhalt.getModel();
+            LagerBestand newlagerbestand = new LagerBestand();
+            newlagerbestand.setLagerId(lagerid);
+            newlagerbestand.setMenge(Integer.parseInt(jtMenge.getText()));
+            newlagerbestand.setResId(selectedRessource.getId());
+            viewcontroller.addLagerbestand(newlagerbestand);
             setInhalte(viewcontroller.getLagerbestand(lagerid));
         }
     }//GEN-LAST:event_jbAddActionPerformed
