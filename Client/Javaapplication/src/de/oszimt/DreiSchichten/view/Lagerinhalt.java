@@ -90,6 +90,7 @@ public class Lagerinhalt extends javax.swing.JPanel {
         jbAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtLagerinhalt = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Lagerinhalt");
 
@@ -129,6 +130,13 @@ public class Lagerinhalt extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtLagerinhalt);
 
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,7 +156,8 @@ public class Lagerinhalt extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jbAdd))
                             .addComponent(jlMenge)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbZurück))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -167,7 +176,9 @@ public class Lagerinhalt extends javax.swing.JPanel {
                         .addComponent(jcResource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jbAdd)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -204,10 +215,15 @@ public class Lagerinhalt extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbAddActionPerformed
 
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAdd;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JComboBox jcResource;
     private javax.swing.JLabel jlMenge;
     private javax.swing.JLabel jlResource;

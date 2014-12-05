@@ -26,6 +26,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jbAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jbZurück" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="202" max="32767" attributes="0"/>
           </Group>
@@ -43,7 +44,9 @@
                   <Component id="jbAdd" max="32767" attributes="0"/>
                   <Component id="jtName" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="209" max="32767" attributes="0"/>
+              <EmptySpace pref="173" max="32767" attributes="0"/>
+              <Component id="jbZurück" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -67,6 +70,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbAddActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jbZur&#xfc;ck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Zur&#xfc;ck"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbZur&#xfc;ckActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -75,6 +75,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
         jbNeuesMitglied = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMitgliederliste = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Mitliederliste");
 
@@ -108,6 +109,13 @@ public class Mitgliederliste extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtMitgliederliste);
 
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,13 +124,18 @@ public class Mitgliederliste extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlTitel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbNeuesMitglied))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlTitel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbNeuesMitglied))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jbZurück)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +145,9 @@ public class Mitgliederliste extends javax.swing.JPanel {
                     .addComponent(jlTitel)
                     .addComponent(jbNeuesMitglied))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -148,6 +163,10 @@ public class Mitgliederliste extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jtMitgliederlisteMouseClicked
 
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
+
     private void bearbeiteMitglied(int id){
         this.viewcontroller.changePanel("BearbeiteMitglied", id);
     }
@@ -160,6 +179,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbNeuesMitglied;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTable jtMitgliederliste;
     // End of variables declaration//GEN-END:variables

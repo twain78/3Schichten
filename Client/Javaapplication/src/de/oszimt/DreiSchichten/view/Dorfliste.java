@@ -101,6 +101,7 @@ public class Dorfliste extends javax.swing.JPanel {
         jbNeuesDorf = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtDorfliste = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Dorfliste");
 
@@ -134,6 +135,13 @@ public class Dorfliste extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtDorfliste);
 
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,7 +153,10 @@ public class Dorfliste extends javax.swing.JPanel {
                         .addComponent(jlTitel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbNeuesDorf))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbZurück)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -156,7 +167,9 @@ public class Dorfliste extends javax.swing.JPanel {
                     .addComponent(jlTitel)
                     .addComponent(jbNeuesDorf))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -172,10 +185,15 @@ public class Dorfliste extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jtDorflisteMouseClicked
 
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbNeuesDorf;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTable jtDorfliste;
     // End of variables declaration//GEN-END:variables

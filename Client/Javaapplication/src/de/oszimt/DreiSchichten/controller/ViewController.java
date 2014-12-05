@@ -28,6 +28,7 @@ public class ViewController {
     private IAccess db;
     private JPanel aktuellesPanel;
     private Bucket bucket;
+    private List<JPanel> panelList;
     
     public ViewController(){
         super();
@@ -53,50 +54,80 @@ public class ViewController {
         switch(value){
             case "Dorfliste":
                 this.aktuellesPanel=new Dorfliste(db.getDorfListe());
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "Lagerliste":
                 this.aktuellesPanel=new Lagerliste(db.getLagerListe(id));
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "Berufsliste":
                 this.aktuellesPanel=new Berufsliste(db.getBerufe(id), this);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "Lagerinhalt":
                 this.aktuellesPanel=new Lagerinhalt(db.getLagerBestaende(id), this);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "Mitgliederliste":
                 this.aktuellesPanel=new Mitgliederliste(db.getMitglieder(id), this);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "NeuesDorf":
                 this.aktuellesPanel=new NeuesDorf(this);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "BearbeiteDorf":
                 this.aktuellesPanel=new NeuesDorf(this, db.getDorf(id));
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "NeuesLager":
                 this.aktuellesPanel=new NeuesLager(this, id);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "BearbeiteLager":
                 this.aktuellesPanel=new NeuesLager(this, db.getLager(id));
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "NeuesMitglied":
                 this.aktuellesPanel=new NeuesMitglied(this, id);
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "BearbeiteMitglied":
                 this.aktuellesPanel=new NeuesMitglied(this, db.getMitglied(id));
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "LastPanel":
+                deleteLastPanel();
+                this.aktuellesPanel=getLastPanel();
                 frame.add(aktuellesPanel);
                 break;
             default:
                 break;
+        }
+    }
+    
+    public void setPanel(JPanel panel){
+        this.panelList.add(panel);  
+    }
+    
+    public JPanel getLastPanel(){
+        return this.panelList.get(panelList.size()-1);
+    }
+    
+    public void deleteLastPanel(){
+        if(panelList.size()>1){
+            this.panelList.remove(panelList.size());
         }
     }
     
