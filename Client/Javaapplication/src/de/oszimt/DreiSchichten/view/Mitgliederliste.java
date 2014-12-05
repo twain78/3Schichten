@@ -4,6 +4,7 @@ import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,19 +23,19 @@ public class Mitgliederliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public Mitgliederliste(Mitglied[] mitgliederliste){
+    public Mitgliederliste(List<Mitglied> mitgliederliste){
         this();
         setMitglieder(mitgliederliste);
     }
     
-    public void setMitglieder(Mitglied[] mitgliederliste){
+    public void setMitglieder(List<Mitglied> mitgliederliste){
         DefaultTableModel model = (DefaultTableModel)jtMitgliederliste.getModel();
         for(final Mitglied mitglied : mitgliederliste){
             JButton button1 = new JButton("B");
             button1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneMitglied(mitglied.getId());
+                    bearbeiteMitglied(mitglied.getId());
                 }
             });
             
@@ -49,14 +50,14 @@ public class Mitgliederliste extends javax.swing.JPanel {
             
             
             
-            Object[] row = {mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
+            Object[] row = {mitglied.getId(), mitglied.getName(), viewcontroller.getBerufnamen(mitglied.getBerufIDs()).toString(), 
                 button1, button2};
             model.addRow(row);
             
         }
     }
     
-    public Mitgliederliste(Mitglied[] mitgliederliste, ViewController vc){
+    public Mitgliederliste(List<Mitglied> mitgliederliste, ViewController vc){
         this(mitgliederliste);
         this.viewcontroller=vc;
     }
@@ -74,6 +75,7 @@ public class Mitgliederliste extends javax.swing.JPanel {
         jbNeuesMitglied = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtMitgliederliste = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Mitliederliste");
 
@@ -89,18 +91,30 @@ public class Mitgliederliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Name", "Beruf", "Bearbeiten", "Löschen"
+                "Mitglied ID", "Name", "Beruf", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        jtMitgliederliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtMitgliederlisteMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtMitgliederliste);
+
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -110,13 +124,18 @@ public class Mitgliederliste extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlTitel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbNeuesMitglied))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlTitel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbNeuesMitglied))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jbZurück)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +145,9 @@ public class Mitgliederliste extends javax.swing.JPanel {
                     .addComponent(jlTitel)
                     .addComponent(jbNeuesMitglied))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -135,17 +156,30 @@ public class Mitgliederliste extends javax.swing.JPanel {
         viewcontroller.changePanel("NeuesMitglied", 0);
     }//GEN-LAST:event_jbNeuesMitgliedActionPerformed
 
-    private void öffneMitglied(int id){
-        this.viewcontroller.changePanel("NeuesMitglied", id);
+    private void jtMitgliederlisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtMitgliederlisteMouseClicked
+        if(jtMitgliederliste.getSelectedRow()>0){
+            jtMitgliederliste.getModel().getValueAt(jtMitgliederliste.getSelectedRow(), 1);
+            viewcontroller.changePanel("NeuesMitglied", Integer.parseInt(jtMitgliederliste.getModel().getValueAt(jtMitgliederliste.getSelectedRow(), 1).toString()));
+        }
+    }//GEN-LAST:event_jtMitgliederlisteMouseClicked
+
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
+
+    private void bearbeiteMitglied(int id){
+        this.viewcontroller.changePanel("BearbeiteMitglied", id);
     }
     
     private void löscheMitglied(int id){
         this.viewcontroller.deleteMitglied(id);
+        jtMitgliederliste.remove(jtMitgliederliste.getSelectedRow());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbNeuesMitglied;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTable jtMitgliederliste;
     // End of variables declaration//GEN-END:variables

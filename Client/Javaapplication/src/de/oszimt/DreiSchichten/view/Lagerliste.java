@@ -5,6 +5,7 @@ import de.oszimt.DreiSchichten.controller.ViewController;
 import de.oszimt.DreiSchichten.model.Lager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,12 +23,12 @@ public class Lagerliste extends javax.swing.JPanel {
         initComponents();
     }
     
-    public Lagerliste(Lager[] lagerliste){
+    public Lagerliste(List<Lager> lagerliste){
         this();
-        setDörfer(lagerliste);
+        setLager(lagerliste);
     }
     
-    public void setDörfer(Lager[] lagerliste){
+    public void setLager(List<Lager> lagerliste){
         DefaultTableModel model = (DefaultTableModel)jtLagerliste.getModel();
         for(final Lager lager : lagerliste){
             JButton button1 = new JButton("B");
@@ -35,7 +36,7 @@ public class Lagerliste extends javax.swing.JPanel {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    öffneLager(lager.getId());
+                    bearbeiteLager(lager.getId());
                 }
             });
             
@@ -48,14 +49,14 @@ public class Lagerliste extends javax.swing.JPanel {
                 }
             });
             
-            Object[] row = {lager.getName(), new DBAccess().getRessourceCount() ,
+            Object[] row = {lager.getId(), lager.getName(), new DBAccess().getRessourceCount() ,
                 button1, button2};
             model.addRow(row);
             
         }
     }
     
-    public Lagerliste(Lager[] lagerliste, ViewController vc){
+    public Lagerliste(List<Lager> lagerliste, ViewController vc){
         this(lagerliste);
         this.viewcontroller=vc;
     }
@@ -73,6 +74,7 @@ public class Lagerliste extends javax.swing.JPanel {
         jbNeuesLager = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtLagerliste = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Lagerliste");
 
@@ -88,18 +90,30 @@ public class Lagerliste extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Lager", "Inhalt", "Bearbeiten", "Löschen"
+                "Lager ID", "Lager", "Inhalt", "Bearbeiten", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
+        jtLagerliste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtLagerlisteMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtLagerliste);
+
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -112,7 +126,10 @@ public class Lagerliste extends javax.swing.JPanel {
                         .addComponent(jlTitel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbNeuesLager))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jbZurück)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,8 +140,10 @@ public class Lagerliste extends javax.swing.JPanel {
                     .addComponent(jlTitel)
                     .addComponent(jbNeuesLager))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
+                .addGap(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -132,17 +151,30 @@ public class Lagerliste extends javax.swing.JPanel {
         viewcontroller.changePanel("NeuesLager", 0);
     }//GEN-LAST:event_jbNeuesLagerActionPerformed
 
-    private void öffneLager(int id){
-        this.viewcontroller.changePanel("Lagerliste", id);
+    private void jtLagerlisteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtLagerlisteMouseClicked
+        if(jtLagerliste.getSelectedRow()>0){
+            jtLagerliste.getModel().getValueAt(jtLagerliste.getSelectedRow(), 1);
+            viewcontroller.changePanel("Lagerinhalt", Integer.parseInt(jtLagerliste.getModel().getValueAt(jtLagerliste.getSelectedRow(), 1).toString()));
+        }
+    }//GEN-LAST:event_jtLagerlisteMouseClicked
+
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
+
+    private void bearbeiteLager(int id){
+        this.viewcontroller.changePanel("BearbeiteLager", id);
     }
     
     private void löscheLager(int id){
         this.viewcontroller.deleteLager(id);
+        jtLagerliste.remove(jtLagerliste.getSelectedRow());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbNeuesLager;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTable jtLagerliste;
     // End of variables declaration//GEN-END:variables

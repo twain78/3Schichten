@@ -1,12 +1,16 @@
 package de.oszimt.DreiSchichten.view;
 
 import de.oszimt.DreiSchichten.controller.ViewController;
+import de.oszimt.DreiSchichten.model.Lager;
 
 /**
  *
  * @author Konstantin Görlitz
  */
 public class NeuesLager extends javax.swing.JPanel {
+    
+    private Lager lager;
+    private int dorfID;
     
     ViewController viewcontroller;
 
@@ -17,8 +21,17 @@ public class NeuesLager extends javax.swing.JPanel {
         initComponents();
     }
     
-    public NeuesLager(ViewController vc){
+    public NeuesLager(ViewController vc, int dorfID){
+        this();
         this.viewcontroller=vc;
+        this.dorfID=dorfID;
+        this.lager=new Lager();
+    }
+    
+    public NeuesLager(ViewController vc, Lager lager){
+        this();
+        this.viewcontroller=vc;
+        this.lager=lager;
     }
 
     /**
@@ -34,6 +47,7 @@ public class NeuesLager extends javax.swing.JPanel {
         jlName = new javax.swing.JLabel();
         jtName = new javax.swing.JTextField();
         jbAdd = new javax.swing.JButton();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Neues Lager");
 
@@ -43,6 +57,13 @@ public class NeuesLager extends javax.swing.JPanel {
         jbAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbAddActionPerformed(evt);
+            }
+        });
+
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
             }
         });
 
@@ -58,7 +79,8 @@ public class NeuesLager extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jtName, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jbAdd)))
+                        .addComponent(jbAdd))
+                    .addComponent(jbZurück))
                 .addContainerGap(202, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -72,18 +94,31 @@ public class NeuesLager extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jbAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtName))
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
+                .addComponent(jbZurück)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
-        viewcontroller.addDorf(jtName.getText());
+        this.lager.setName(jtName.getText());
+        if(this.lager.getId()>0){
+            viewcontroller.setLager(this.lager);
+        } else {
+            this.lager.setDorfId(this.dorfID);
+            viewcontroller.addLager(this.lager);
+        }
         viewcontroller.changePanel("Lagerliste", viewcontroller.getBucketDorf().getId());
     }//GEN-LAST:event_jbAddActionPerformed
+
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jbAdd;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JLabel jlName;
     private javax.swing.JLabel jlTitel;
     private javax.swing.JTextField jtName;

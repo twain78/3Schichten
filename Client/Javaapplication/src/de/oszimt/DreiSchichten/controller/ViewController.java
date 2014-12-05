@@ -3,11 +3,19 @@ package de.oszimt.DreiSchichten.controller;
 import de.oszimt.DreiSchichten.model.Beruf;
 import de.oszimt.DreiSchichten.model.Berufstyp;
 import de.oszimt.DreiSchichten.model.Dorf;
+import de.oszimt.DreiSchichten.model.Lager;
 import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Mitglied;
 import de.oszimt.DreiSchichten.model.Ressource;
+import de.oszimt.DreiSchichten.view.Berufsliste;
 import de.oszimt.DreiSchichten.view.Dorfliste;
+import de.oszimt.DreiSchichten.view.Lagerinhalt;
 import de.oszimt.DreiSchichten.view.Lagerliste;
+import de.oszimt.DreiSchichten.view.Mitgliederliste;
+import de.oszimt.DreiSchichten.view.NeuesDorf;
+import de.oszimt.DreiSchichten.view.NeuesLager;
+import de.oszimt.DreiSchichten.view.NeuesMitglied;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -20,6 +28,7 @@ public class ViewController {
     private IAccess db;
     private JPanel aktuellesPanel;
     private Bucket bucket;
+    private List<JPanel> panelList;
     
     public ViewController(){
         super();
@@ -38,21 +47,87 @@ public class ViewController {
         frame.add(aktuellesPanel);
         frame.setVisible(true);
         Dorfliste d = (Dorfliste)aktuellesPanel;
-        d.setDörfer(db.getDorfliste());
+        d.setDörfer(db.getDorfListe());
     }
     
     public void changePanel(String value, int id){
         switch(value){
             case "Dorfliste":
-                this.aktuellesPanel=new Dorfliste(db.getDorfliste());
+                this.aktuellesPanel=new Dorfliste(db.getDorfListe());
+                setPanel(aktuellesPanel);
                 frame.add(aktuellesPanel);
                 break;
             case "Lagerliste":
-                this.aktuellesPanel=new Lagerliste(db.getLagerliste(id));
+                this.aktuellesPanel=new Lagerliste(db.getLagerListe(id));
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "Berufsliste":
+                this.aktuellesPanel=new Berufsliste(db.getBerufe(id), this);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "Lagerinhalt":
+                this.aktuellesPanel=new Lagerinhalt(db.getLagerBestaende(id), this);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "Mitgliederliste":
+                this.aktuellesPanel=new Mitgliederliste(db.getMitglieder(id), this);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesDorf":
+                this.aktuellesPanel=new NeuesDorf(this);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteDorf":
+                this.aktuellesPanel=new NeuesDorf(this, db.getDorf(id));
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesLager":
+                this.aktuellesPanel=new NeuesLager(this, id);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteLager":
+                this.aktuellesPanel=new NeuesLager(this, db.getLager(id));
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "NeuesMitglied":
+                this.aktuellesPanel=new NeuesMitglied(this, id);
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "BearbeiteMitglied":
+                this.aktuellesPanel=new NeuesMitglied(this, db.getMitglied(id));
+                setPanel(aktuellesPanel);
+                frame.add(aktuellesPanel);
+                break;
+            case "LastPanel":
+                deleteLastPanel();
+                this.aktuellesPanel=getLastPanel();
                 frame.add(aktuellesPanel);
                 break;
             default:
                 break;
+        }
+    }
+    
+    public void setPanel(JPanel panel){
+        this.panelList.add(panel);  
+    }
+    
+    public JPanel getLastPanel(){
+        return this.panelList.get(panelList.size()-1);
+    }
+    
+    public void deleteLastPanel(){
+        if(panelList.size()>1){
+            this.panelList.remove(panelList.size());
         }
     }
     
@@ -91,31 +166,39 @@ public class ViewController {
         return db.getRessource(id).getName();
     }
     
-    public Ressource[] getRessourcen(){
+    public List<Ressource> getRessourcen(){
         return db.getRessourcen();
     }
     
-    public Berufstyp[] getBerufstypen(){
+    public List<Berufstyp> getBerufstypen(){
         return db.getBerufstypen();
     }
     
-    public void updateLagerbestand(int id, String ressourcename, int menge){
-        db.updateLagerbestand(id, ressourcename, menge);
+    public void updateLagerbestand(LagerBestand lagerbestand){
+        db.setLagerBestand(lagerbestand);
     }
     
-    public void updateBeruf(int id, String berufsname, int punkte){
-        db.updateBeruf(id, berufsname, punkte);
+    public void updateBeruf(Beruf beruf){
+        db.setBeruf(beruf);
     }
     
-    public LagerBestand[] getLagerbestand(int lagerid){
-        return db.getLagerBestände(lagerid);
+    public void addLagerbestand(LagerBestand lagerbestand){
+        db.addLagerBestand(lagerbestand);
+    }
+    
+    public List<LagerBestand> getLagerbestand(int lagerid){
+        return db.getLagerBestaende(lagerid);
+    }
+    
+    public void addBeruf(Beruf beruf){
+        db.addBeruf(beruf);
     }
     
     public String getBerufName(int id){
         return db.getBerufstyp(id).getName();
     }
     
-    public Beruf[] getBerufe(int mitgliedid){
+    public List<Beruf> getBerufe(int mitgliedid){
         return db.getBerufe(mitgliedid);
     }
     
@@ -127,11 +210,27 @@ public class ViewController {
         return bucket.getDorf();
     }
     
-    public void addDorf(String dorfname){
-        db.addDorf(new Dorf(0, dorfname));
+    public void addDorf(Dorf dorf){
+        db.addDorf(dorf);
     }
     
-    public void addMitglied(String mitgliedsname){
-        db.addMitglied(new Mitglied(0, bucket.getDorf().getId(), mitgliedsname));
+    public void setDorf(Dorf dorf){
+        db.setDorf(dorf);
+    }
+    
+    public void setMitglied(Mitglied mitglied){
+        db.setMitglied(mitglied);
+    }
+    
+    public void addMitglied(Mitglied mitglied){
+        db.addMitglied(mitglied);
+    }
+    
+    public void setLager(Lager lager){
+        db.setLager(lager);
+    }
+    
+    public void addLager(Lager lager){
+        db.addLager(lager);
     }
 }

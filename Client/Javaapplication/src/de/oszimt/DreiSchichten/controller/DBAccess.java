@@ -228,7 +228,7 @@ public class DBAccess implements IAccess {
         m_GetMitglied = m_Connection
                 .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied WHERE P_ID = ?");
         m_GetMitglieder = m_Connection
-                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied");
+                .prepareStatement("SELECT P_ID, FK_DORF_ID, Name FROM Mitglied WHERE FK_DORF_ID = ?");
         m_GetMitgliedCount = m_Connection
                 .prepareStatement("SELECT COUNT(*) FROM Mitglied");    
         m_SetMitglied = m_Connection
@@ -533,7 +533,6 @@ public class DBAccess implements IAccess {
   
   
   @Override
-<<<<<<< HEAD
   public List<Dorf> getDorfListe()
   {       
       List<Dorf> DorfList = new ArrayList<Dorf>();
@@ -550,12 +549,6 @@ public class DBAccess implements IAccess {
           
       }
       return DorfList;
-=======
-  public Dorf[] getDorfliste()  // Edit-Marker
-  {
-      return new Dorf[]{};
-      //todo m_GetDörfer
->>>>>>> upstream/master
   }
   
   @Override
@@ -882,11 +875,12 @@ public class DBAccess implements IAccess {
   }
   
   @Override
-  public List<Mitglied> getMitglieder()
+  public List<Mitglied> getMitglieder(int dorfId)
   {          
       List<Mitglied> MitgliederListe = new ArrayList<Mitglied>();
       
-      try {       
+      try { 
+      m_GetMitglieder.setInt(1, dorfId);
       m_ResultSet = m_GetMitglieder.executeQuery();
                 
       while(m_ResultSet.next())
@@ -1080,48 +1074,6 @@ public class DBAccess implements IAccess {
         
       }
   }
-<<<<<<< HEAD
-=======
 
-    @Override
-    public Lager[] getLagerliste(int dorfId) {
-        // todo Methode implementieren
-        return new Lager[]{};
-    }
-
-    @Override
-    public Ressource[] getRessourcen() {
-        // todo Methode Implementieren, holt alle Ressourcen aus der Datenbank
-        return null;
-    }
-
-    @Override
-    public void updateLagerbestand(int id, String ressourcename, int menge) {
-        // todo die Methode soll einen bestehenden Lagerbestand anhand der LAGERID ändern
-    }
-
-    @Override
-    public LagerBestand[] getLagerBestände(int lagerId) {
-        // todo die methode soll alle Lagerbestände zu einer Lager Id zurück geben
-        return null;
-    }
-
-    @Override
-    public Berufstyp[] getBerufstypen() {
-        // todo die methode soll alle Berufstypen zurück geben
-        return null;
-    }
-
-    @Override
-    public void updateBeruf(int id, String berufsname, int punkte) {
-        // todo die methode einen beruf updaten anhand der mitgliedid und des berufsnamens
-    }
-
-    @Override
-    public Beruf[] getBerufe(int mitgliedId) {
-        // todo die methode gibt alle Berufe zu einer Mitglieds id zurück
-        return null;
-    }
   
->>>>>>> upstream/master
 }

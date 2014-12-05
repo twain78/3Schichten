@@ -5,6 +5,7 @@ import de.oszimt.DreiSchichten.model.LagerBestand;
 import de.oszimt.DreiSchichten.model.Ressource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
@@ -16,6 +17,7 @@ public class Lagerinhalt extends javax.swing.JPanel {
 
     private ViewController viewcontroller;
     private int lagerid;
+    private List<LagerBestand> lagerbestände;
     
     /**
      * Creates new form Lagerinhalt
@@ -31,13 +33,13 @@ public class Lagerinhalt extends javax.swing.JPanel {
         }
     }
     
-    public Lagerinhalt(LagerBestand[] lagerbestände){
+    public Lagerinhalt(List<LagerBestand> lagerbestände){
         this();
         setInhalte(lagerbestände);
-        this.lagerid=lagerbestände[0].getId();
+        this.lagerbestände=lagerbestände;
     }
     
-    public void setInhalte(LagerBestand[] lagerbestände){
+    public void setInhalte(List<LagerBestand> lagerbestände){
         DefaultTableModel model = (DefaultTableModel)jtLagerinhalt.getModel();
         model.setRowCount(0);
         for(final LagerBestand lagerbestand : lagerbestände){
@@ -50,16 +52,25 @@ public class Lagerinhalt extends javax.swing.JPanel {
             });
             
             
-            Object[] row = {viewcontroller.getRessourceName(lagerbestand.getId()), lagerbestand.getMenge(),
+            Object[] row = {lagerbestand.getId(), viewcontroller.getRessourceName(lagerbestand.getId()), lagerbestand.getMenge(),
                 button1};
             model.addRow(row);
             
         }
     }
     
-    public Lagerinhalt(LagerBestand[] lagerbestände, ViewController vc){
+    public Lagerinhalt(List<LagerBestand> lagerbestände, ViewController vc){
         this(lagerbestände);
         this.viewcontroller=vc;
+    }
+    
+    private LagerBestand findeLagerbestand(int lagerbestandid){
+        for(LagerBestand lagerbestand : this.lagerbestände){
+            if(lagerbestand.getId()==lagerbestandid){
+                return lagerbestand;
+            }
+        }
+        return null;
     }
 
     /**
@@ -79,6 +90,7 @@ public class Lagerinhalt extends javax.swing.JPanel {
         jbAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtLagerinhalt = new javax.swing.JTable();
+        jbZurück = new javax.swing.JButton();
 
         jlTitel.setText("Lagerinhalt");
 
@@ -105,11 +117,11 @@ public class Lagerinhalt extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Resource", "Menge", "Löschen"
+                "Lagerbestand ID", "Resource", "Menge", "Löschen"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -117,6 +129,13 @@ public class Lagerinhalt extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(jtLagerinhalt);
+
+        jbZurück.setText("Zurück");
+        jbZurück.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbZurückActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -137,7 +156,8 @@ public class Lagerinhalt extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jbAdd))
                             .addComponent(jlMenge)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbZurück))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -150,12 +170,15 @@ public class Lagerinhalt extends javax.swing.JPanel {
                     .addComponent(jlResource)
                     .addComponent(jlMenge))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcResource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbAdd)
-                    .addComponent(jtMenge))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtMenge, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jcResource, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbAdd)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbZurück)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -172,24 +195,35 @@ public class Lagerinhalt extends javax.swing.JPanel {
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
         boolean temp=true;
         Ressource selectedRessource = (Ressource)jcResource.getSelectedItem();
-        for(int i=0; i<jtLagerinhalt.getRowCount(); i++){
-            if(selectedRessource.getName().equals(jtLagerinhalt.getModel().getValueAt(0, i))){
-                jtLagerinhalt.getModel().setValueAt((Integer.parseInt(jtLagerinhalt.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtMenge.getText())), i, 1);
+        for(int i=1; i<=jtLagerinhalt.getRowCount(); i++){
+            if(selectedRessource.getName().equals(jtLagerinhalt.getModel().getValueAt(1, i))){
+                jtLagerinhalt.getModel().setValueAt((Integer.parseInt(jtLagerinhalt.getModel().getValueAt(3, i).toString())+Integer.parseInt(jtMenge.getText())), i, 3);
                 temp=false;
-                viewcontroller.updateLagerbestand(this.lagerid, jtLagerinhalt.getModel().getValueAt(0, i).toString(), Integer.parseInt(jtLagerinhalt.getModel().getValueAt(1, i).toString())+Integer.parseInt(jtMenge.getText()));
+                LagerBestand lb = findeLagerbestand(Integer.parseInt(jtLagerinhalt.getValueAt(i, 1).toString()));
+                lb.setMenge(Integer.parseInt(jtLagerinhalt.getValueAt(i, 3).toString()));
+                viewcontroller.updateLagerbestand(lb);
             }
             
         }
         if(temp){
-            DefaultTableModel model = (DefaultTableModel)jtLagerinhalt.getModel();
+            LagerBestand newlagerbestand = new LagerBestand();
+            newlagerbestand.setLagerId(lagerid);
+            newlagerbestand.setMenge(Integer.parseInt(jtMenge.getText()));
+            newlagerbestand.setResId(selectedRessource.getId());
+            viewcontroller.addLagerbestand(newlagerbestand);
             setInhalte(viewcontroller.getLagerbestand(lagerid));
         }
     }//GEN-LAST:event_jbAddActionPerformed
+
+    private void jbZurückActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbZurückActionPerformed
+        viewcontroller.changePanel("LastPanel", 0);
+    }//GEN-LAST:event_jbZurückActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbAdd;
+    private javax.swing.JButton jbZurück;
     private javax.swing.JComboBox jcResource;
     private javax.swing.JLabel jlMenge;
     private javax.swing.JLabel jlResource;

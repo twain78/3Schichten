@@ -36,6 +36,7 @@
                       </Group>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" min="-2" pref="375" max="-2" attributes="0"/>
+                  <Component id="jbZurück" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
@@ -52,13 +53,17 @@
                   <Component id="jlMenge" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jcResource" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jbAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jtMenge" alignment="1" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jcResource" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jbAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="275" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="245" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jbZurück" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -113,7 +118,8 @@
         <Component class="javax.swing.JTable" name="jtLagerinhalt">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="3" rowCount="0">
+              <Table columnCount="4" rowCount="0">
+                <Column editable="true" title="Lagerbestand ID" type="java.lang.Integer"/>
                 <Column editable="true" title="Resource" type="java.lang.String"/>
                 <Column editable="true" title="Menge" type="java.lang.Integer"/>
                 <Column editable="true" title="L&#xf6;schen" type="java.lang.Object"/>
@@ -123,5 +129,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jbZur&#xfc;ck">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Zur&#xfc;ck"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbZur&#xfc;ckActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
