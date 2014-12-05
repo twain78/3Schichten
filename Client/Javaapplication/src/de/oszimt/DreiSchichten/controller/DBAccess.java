@@ -158,7 +158,7 @@ public class DBAccess implements IAccess {
         m_SetBeruf = m_Connection
                 .prepareStatement("UPDATE Beruf SET Punkte = ? WHERE P_ID = ?");
         m_AddBeruf = m_Connection                                                          // allerdings muss man hier einen Primary Key zurückgeben also entweder Int oder ein Object der Klasse
-                .prepareStatement("INSERT INTO Beruf (FK_TYP_ID, FK_Mitglied_ID, Punkte) VALUES(?, ?)");   // auto_increment sollte den primary_Key selbst hochzählen bzw. Trigger mit Verantwortung (comment1)
+                .prepareStatement("INSERT INTO Beruf (FK_TYP_ID, FK_Mitglied_ID, Punkte) VALUES(?, ?, ?)");   // auto_increment sollte den primary_Key selbst hochzählen bzw. Trigger mit Verantwortung (comment1)
         m_RemBeruf = m_Connection                                                   
                 .prepareStatement("DELETE FROM Beruf WHERE P_ID = ?");                     // Trigger muss hier alle Abhängigkeiten auflösen (comment2)
 

@@ -63,6 +63,8 @@ public class Dorfliste extends javax.swing.JPanel {
                 }
             });
             
+            /// hier musst du anders abfragen, in Dorf gibt es quasi keine Mitglieder und keine Lagerliste
+            // allerdings haben die Mitlgieder eine DorfId und die Lager auch
             Object[] row = {dorf.getId(), dorf.getName(), dorf.getMitgliederIDs().length, dorf.getLagerIDs().length, 
                 button1, button2, button3};
             model.addRow(row);
