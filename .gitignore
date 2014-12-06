@@ -1,2 +1,7 @@
 /Client/Javaapplication/build/
 /Client/Javaapplication/dist/
+
+# NetBean Projekt Files #
+#########################
+private.xml
+private.properties
