@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/view/Berufsliste.java</file>
             <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/controller/ViewController.java</file>
+            <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/controller/ViewFactory.java</file>
             <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/application/Main.java</file>
+            <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/controller/IView.java</file>
             <file>file:/C:/Users/keinMensch/Documents/GitHub/3Schichten/Client/Javaapplication/src/de/oszimt/DreiSchichten/controller/TUIView.java</file>
         </group>
     </open-files>
